@@ -1,5 +1,8 @@
 package primitives;
 
+/**
+ * Point class represents a point in the space
+ */
 public class Point {
     Double3 xyz;
 
@@ -66,10 +69,9 @@ public class Point {
         return Math.sqrt(distanceSquared(p));
     }
 
-
     @Override
     public String toString() {
-        return "Point - " + xyz.toString();
+        return "Point: " + xyz.toString();
     }
 
     @Override
@@ -96,9 +98,4 @@ public class Point {
             return false;
         return true;
     }
-
-    
-
-
-    
 }

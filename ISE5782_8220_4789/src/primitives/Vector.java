@@ -1,5 +1,8 @@
 package primitives;
 
+/**
+ * Vector class represents a vector in space
+ */
 public class Vector extends Point {
 
     /**
@@ -101,8 +104,6 @@ public class Vector extends Point {
 
     @Override
     public String toString() {
-        return "Vector - " + super.toString();
-    }
-
-    
+        return "Vector: " + super.toString();
+    } 
 }
