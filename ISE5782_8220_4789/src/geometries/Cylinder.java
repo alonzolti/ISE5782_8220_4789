@@ -5,15 +5,16 @@ import primitives.*;
 /**
  * Cylinder class represent a cylinder in space
  */
-public class Cylinder extends Tube{
-  
+public class Cylinder extends Tube {
+
     final double height;
 
     /**
      * constructor
+     * 
      * @param axisRay ray of the cylinder
-     * @param radius radius of the cylinder
-     * @param height height of the cylinder
+     * @param radius  radius of the cylinder
+     * @param height  height of the cylinder
      */
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
@@ -22,7 +23,8 @@ public class Cylinder extends Tube{
 
     /**
      * getter for height
-     * @return double
+     * 
+     * @return double, height of the cylinder
      */
     public double getHeight() {
         return height;
@@ -31,10 +33,5 @@ public class Cylinder extends Tube{
     @Override
     public Vector getNormal(Point p) {
         return super.getNormal(p);
-    }
-
-    @Override
-    public String toString() {
-        return "Cylinder: " + axisRay.toString() + "\nradius: " + radius + "\nheight: " + height;
     }
 }

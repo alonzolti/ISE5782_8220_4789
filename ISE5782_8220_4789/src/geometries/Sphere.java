@@ -1,15 +1,17 @@
 package geometries;
 
 import primitives.*;
+
 /**
  * Sphere class represents sphere in space
  */
-public class Sphere implements Geometry{
+public class Sphere implements Geometry {
     final Point center;
     final double radius;
 
     /**
-     * constructor 
+     * constructor
+     * 
      * @param center center of the sphere
      * @param radius radius of the sphere
      */
@@ -20,6 +22,7 @@ public class Sphere implements Geometry{
 
     /**
      * getter for center field
+     * 
      * @return Point
      */
     public Point getCenter() {
@@ -28,6 +31,7 @@ public class Sphere implements Geometry{
 
     /**
      * getter for radius field
+     * 
      * @return double
      */
     public double getRadius() {
@@ -37,10 +41,5 @@ public class Sphere implements Geometry{
     @Override
     public Vector getNormal(Point p) {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Sphere: " + center.toString() + "\nradius: " + radius;
     }
 }

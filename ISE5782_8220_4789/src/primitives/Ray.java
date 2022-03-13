@@ -9,7 +9,8 @@ public class Ray {
 
     /**
      * constructor, normalizez the vector before saving it
-     * @param p0 point
+     * 
+     * @param p0  point
      * @param dir vector
      */
     public Ray(Point p0, Vector dir) {
@@ -19,7 +20,8 @@ public class Ray {
 
     /**
      * getter for p0 field
-     * @return point
+     * 
+     * @return point p0
      */
     public Point getP0() {
         return p0;
@@ -27,6 +29,7 @@ public class Ray {
 
     /**
      * getter for dir field
+     * 
      * @return vector
      */
     public Vector getDir() {
@@ -35,16 +38,7 @@ public class Ray {
 
     @Override
     public String toString() {
-        return "Ray: " + p0.toString() + '\n'+  dir.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((dir == null) ? 0 : dir.hashCode());
-        result = prime * result + ((p0 == null) ? 0 : p0.hashCode());
-        return result;
+        return "Ray: " + p0.toString() + '\n' + dir.toString();
     }
 
     @Override
@@ -53,19 +47,9 @@ public class Ray {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (!(obj instanceof Ray))
             return false;
         Ray other = (Ray) obj;
-        if (dir == null) {
-            if (other.dir != null)
-                return false;
-        } else if (!dir.equals(other.dir))
-            return false;
-        if (p0 == null) {
-            if (other.p0 != null)
-                return false;
-        } else if (!p0.equals(other.p0))
-            return false;
-        return true;
-    } 
+        return p0.equals(other.p0) && dir.equals(other.dir);
+    }
 }
