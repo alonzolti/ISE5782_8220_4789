@@ -2,7 +2,8 @@ package unittests.geometries;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions.*;
-
+import geometries.*;
+import primitives.*;
 public class SphereTest {
     @Test
     void testGetNormal() {
