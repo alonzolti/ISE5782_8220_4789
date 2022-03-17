@@ -1,12 +1,26 @@
 package unittests.geometries;
 
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+import geometries.*;
+import primitives.*;
+
 
 public class CylinderTest {
     @Test
     void testGetNormal() {
         
-        assertTrue(true);
+        Cylinder c1 = new Cylinder(new Ray(new Point(0,0,0), new Vector(1,0,0)), 1, 1);
+        // ============ Equivalence Partitions Tests on the bases ==============
+        Point p1 = new Point(1, 0, 0);
+        Vector v1 = c1.getNormal(p1);
+        // TC01: Test that normal vector is righty
+        assertEquals(new Vector(1, 0, 0), v1, "getNormal() wrong result ");
+        // ============ Equivalence Partitions Tests on the sides ==============
+        Point p2 = new Point(0.5, 1, 0);
+        Vector v2 = c1.getNormal(p2);
+        // TC01: Test that normal vector is righty
+        assertEquals(new Vector(0, 1, 0), v2, "getNormal() wrong result ");
     }
 }
