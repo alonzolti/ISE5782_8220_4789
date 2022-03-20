@@ -17,4 +17,10 @@ public class TriangleTest {
             t1.getNormal(),
             "getNormal() wrong result");
     }
+
+    @Test
+    void testFindIntersections()
+    {
+        // ============ Equivalence Partitions Tests ==============
+    }
 }

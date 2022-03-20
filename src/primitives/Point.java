@@ -27,6 +27,33 @@ public class Point {
     }
 
     /**
+     * getter for x coordinate
+     * @return x coordiante (double)
+     */
+    public double getX()
+    {
+        return xyz.d1;
+    }
+
+    /**
+     * getter for y coordiante
+     * @return y coordiante (double)
+     */
+    public double getY()
+    {
+        return xyz.d2;
+    }
+
+    /**
+     * getter for z coordiante
+     * @return z coordiante (double)
+     */
+    public double getZ()
+    {
+        return xyz.d3;
+    }
+
+    /**
      * subtraction between 2 points
      * 
      * @param p point

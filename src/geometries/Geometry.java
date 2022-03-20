@@ -5,7 +5,7 @@ import primitives.*;
 /**
  * interface Geometry, represent shapes in space
  */
-public interface Geometry {
+public interface Geometry extends Intersectable {
     /**
      * the function calculate the normal vector to a point on the geometric shape
      * 

@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.*;
 
 /**
@@ -40,6 +42,13 @@ public class Tube implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
+        return null;
+    }
+
+    //bonus
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // TODO Auto-generated method stub
         return null;
     }
 }
