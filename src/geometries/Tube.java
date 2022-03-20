@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.List;
+
 import primitives.*;
 
 /**
@@ -45,6 +47,13 @@ public class Tube implements Geometry {
         if(p.distance(meetingpoint) == radius){
             return meetingpoint.subtract(p);
         }
+        return null;
+    }
+
+    //bonus
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        // TODO Auto-generated method stub
         return null;
     }
 }
