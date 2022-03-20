@@ -40,6 +40,9 @@ public class Sphere implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
+        if (center.distance(p) == radius){
+            return center.subtract(p).normalize();
+        }
         return null;
     }
 }

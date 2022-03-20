@@ -29,8 +29,11 @@ public class Plane implements Geometry {
      * @param c point 3
      */
     public Plane(Point a, Point b, Point c) {
-        normal = null;
-        q0 = a;
+        Vector v1 = a.subtract(b);
+        Vector v2 = a.subtract(c);
+        normal = v1.crossProduct(v2).normalize();
+        this.q0 = a;
+
     }
 
     /**

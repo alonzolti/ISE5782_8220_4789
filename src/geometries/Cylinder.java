@@ -32,6 +32,11 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point p) {
+        double cap = axisRay.getP0().subtract(p).dotProduct(axisRay.getDir());
+        Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
+        if(p.distance(meetingpoint) < radius){ // if it is on the base.
+            return axisRay.getDir();
+        }
         return super.getNormal(p); // if on the side
     }
 }
