@@ -14,8 +14,8 @@ public class PlaneTest {
         Plane p2 = new Plane(new Point(1, 2, 3), new Vector(3, 4, 5));
         Vector v1 = p1.getNormal(new Point(1, 2, 3));
        //TC01: Test that getNormal of Plane made of 3 points works
-       assertTrue((new Vector(-0.7071067811865476, 0.0, 0.7071067811865476) == v1 || 
-       new Vector(0.7071067811865476, 0.0, -0.7071067811865476) == v1), 
+       assertTrue((new Vector(-0.7071067811865476, 0.0, 0.7071067811865476).equals(v1) || 
+       new Vector(0.7071067811865476, 0.0, -0.7071067811865476).equals(v1)), 
        "getNormal() wrong result ");
 
        //TC02: Test that getNormal of Plane made of point and a normal works

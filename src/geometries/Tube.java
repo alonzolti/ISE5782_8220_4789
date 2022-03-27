@@ -42,10 +42,10 @@ public class Tube implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
-        double cap = axisRay.getP0().subtract(p).dotProduct(axisRay.getDir());
+        double cap = -1 * axisRay.getP0().subtract(p).dotProduct(axisRay.getDir());
         Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
         if(p.distance(meetingpoint) == radius){
-            return meetingpoint.subtract(p);
+            return p.subtract(meetingpoint);
         }
         return null;
     }
