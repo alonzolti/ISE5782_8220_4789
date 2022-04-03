@@ -34,10 +34,12 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point p) {
-        if(p.equals(axisRay.getP0())){
+        if(p.equals(axisRay.getP0())){ 
             return axisRay.getDir().scale(-1);
         }
-        double cap = p.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
+        /// calculating the distance from the base point and the nearest point to the normal point
+        // if the distance equals to 0 or the radius
+        double cap = p.subtract(axisRay.getP0()).dotProduct(axisRay.getDir()); 
         if(cap == 0){
             return axisRay.getDir().scale(-1);
         }
