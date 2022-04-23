@@ -43,8 +43,8 @@ public class Cylinder extends Tube {
         if(cap == 0){
             return axisRay.getDir().scale(-1);
         }
- //       Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
- //       if(meetingpoint.equals(axisRay.getP0()) || meetingpoint.equals(axisRay.getP0().add(axisRay.getDir()))){ // if it is on the base.
+        //Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
+        //if(meetingpoint.equals(axisRay.getP0()) || meetingpoint.equals(axisRay.getP0().add(axisRay.getDir()))){ // if it is on the base.
         if (cap == radius){
             return axisRay.getDir(); 
         }

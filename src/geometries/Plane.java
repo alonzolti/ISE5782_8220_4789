@@ -32,9 +32,16 @@ public class Plane implements Geometry {
      * @param c point 3
      */
     public Plane(Point a, Point b, Point c) {
+        //check that the points isn't the same
+        if(a.equals(b) || b.equals(c) || a.equals(c))
+            throw new IllegalArgumentException("Same points");
+        
         Vector v1 = a.subtract(b);
         Vector v2 = a.subtract(c);
+
+        //if the 3 points on the same line, then we would get vector 0
         normal = v1.crossProduct(v2).normalize();
+
         this.q0 = a;
 
     }
