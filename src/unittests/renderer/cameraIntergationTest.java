@@ -99,10 +99,10 @@ public class cameraIntergationTest {
         Camera camera = new Camera(new Point(0,0,0), new Vector(0,1,0), new Vector(0,0,-1));
         camera.setVPDistance(1).setVPSize(3d, 3d);
         Triangle triangle = new Triangle(new Point(0,1,-2), new Point(1,-1,-2), new Point(-1,-1,-2));
-        assertEquals(0, findIntersection(camera, triangle),"small triangle is'nt working");
+        assertEquals(1, findIntersection(camera, triangle),"small triangle is'nt working");
         // TC02 big triangle 2 point
         triangle = new Triangle(new Point(0,20,-2), new Point(1,-1,-2), new Point(-1,-1,-2));
-        assertEquals(0, findIntersection(camera, triangle),"big triangle is'nt working");
+        assertEquals(2, findIntersection(camera, triangle),"big triangle is'nt working");
         
     }
 }
