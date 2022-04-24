@@ -74,12 +74,14 @@ public class Plane implements Geometry {
         //Ray Points: P = P0 + t * v, t > 0
         //Plane points: n * (Q - P) = 0
         double nv = normal.dotProduct(ray.getDir());
+        if(q0.equals(ray.getP0()))
+            return null;
         if(isZero(nv))
             return null;
 
         double t = alignZero(normal.dotProduct(q0.subtract(ray.getP0()))/nv);
         if(t <= 0)
             return null;
-        return List.of(ray.getP0().add(ray.getDir().scale(t)));
+        return List.of(ray.getPoint(t));
     }
 }
