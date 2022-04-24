@@ -1,9 +1,9 @@
 package geometries;
 
 import java.util.List;
-import java.lang.Math;
-import primitives.*;
 
+import primitives.Util.*;
+import primitives.*;
 /**
  * Sphere class represents sphere in space
  */
@@ -52,11 +52,11 @@ public class Sphere implements Geometry {
         //Sphere points: |P-O|^2 - r^2 = 0
 
         Vector u = this.center.subtract(ray.getP0());
-        double tm = ray.getDir().dotProduct(u);
-        double d = Math.sqrt(u.lengthSquared() - tm*tm);
-        double th = Math.sqrt(radius * radius - d * d);
-        double t1 = tm + th;
-        double t2 = tm - th;
+        double tm = Util.alignZero(ray.getDir().dotProduct(u));
+        double d = Util.alignZero(Math.sqrt(u.lengthSquared() - tm*tm));
+        double th = Util.alignZero(Math.sqrt(radius * radius - d * d));
+        double t1 = Util.alignZero(tm + th);
+        double t2 = Util.alignZero(tm - th);
         if(t1 > 0){
             Point p1 = ray.getP0().add(ray.getDir().scale(t1));
             if(t2 > 0)
@@ -64,6 +64,7 @@ public class Sphere implements Geometry {
                 Point p2 = ray.getP0().add(ray.getDir().scale(t2));
                 return List.of(p1,p2);
             }
+            return List.of(p1);
         }
         else if(t2 > 0)
         {

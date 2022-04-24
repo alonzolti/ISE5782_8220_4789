@@ -36,6 +36,15 @@ public class Ray {
         return dir;
     }
 
+    /**
+     * calculate spacific place on the ray
+     * @param t the scalar
+     * @return return the actual point
+     */
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
+    }
+
     @Override
     public String toString() {
         return "Ray: " + p0.toString() + '\n' + dir.toString();

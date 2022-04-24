@@ -5,7 +5,7 @@ import java.util.List;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
+import static primitives.Util.*;
 /**
  * Plane class represent a plane in space
  */
@@ -74,9 +74,10 @@ public class Plane implements Geometry {
         //Ray Points: P = P0 + t * v, t > 0
         //Plane points: n * (Q - P) = 0
         double nv = normal.dotProduct(ray.getDir());
-        if(nv == 0)
+        if(isZero(nv))
             return null;
-        double t = (normal.dotProduct(q0.subtract(ray.getP0())))/nv;
+
+        double t = alignZero(normal.dotProduct(q0.subtract(ray.getP0()))/nv);
         if(t <= 0)
             return null;
         return List.of(ray.getP0().add(ray.getDir().scale(t)));

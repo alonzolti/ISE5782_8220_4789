@@ -10,7 +10,7 @@ import primitives.*;
 public interface Intersectable {
     /**
      * the function find all the intersection points between a ray and the geometric shape
-     * @param ray, the ray
+     * @param ray, the ray that intersect the shape
      * @return list of all the points
      */
     public List<Point> findIntersections(Ray ray);

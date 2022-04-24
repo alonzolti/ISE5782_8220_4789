@@ -42,9 +42,12 @@ public class SphereTest {
         assertEquals(List.of(p1, p2), result, "Ray crosses sphere");
 
         // TC03: Ray starts inside the sphere (1 point)
+        result = sphere.findIntersections(new Ray(new Point(0.5, 0, 0),new Vector(3, 1, 0)));
+        assertEquals(1, result.size(), "Wrong number of poins(supposed to be 1 point)");
+        assertEquals(List.of(new Point(1.84,0.54,0)),result );
         
         // TC04: Ray starts after the sphere (0 points)
-
+        assertNull(sphere.findIntersections(new Ray(new Point(1,1,0.5),new Vector(1, 2, 1))),"Wrong number of points");
         // =============== Boundary Values Tests ==================
 
         // **** Group: Ray's line crosses the sphere (but not the center)

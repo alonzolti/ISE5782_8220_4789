@@ -17,12 +17,13 @@ public class TriangleTest {
         assertTrue((new Vector(0, 0, 1).equals(normal) || new Vector(0, 0, -1).equals(normal)),
             "getNormal() wrong result");
     // =============== Boundary Values Tests ==================
-//        Triangle t1 = new Triangle(new Point(0,5,0),new Point(0,5,0), new Point(-5,5,0));
-//        Triangle t2 = new Triangle(new Point(0,0,0), new Point(0,1,0), new Point(0,2,0));
+    //        Triangle t1 = new Triangle(new Point(0,5,0),new Point(0,5,0), new Point(-5,5,0));
+    //        Triangle t2 = new Triangle(new Point(0,0,0), new Point(0,1,0), new Point(0,2,0));
 }
     @Test
     void testFindIntersections()
     {
         // ============ Equivalence Partitions Tests ==============
+        
     }
 }
