@@ -12,8 +12,7 @@ import primitives.*;
 public class PlaneTest {
 
     @Test
-    void testConstructorPoints()
-    {
+    void testConstructorPoints(){
         // ============ Equivalence Partitions Tests ==============
         // TC01: trying build correct plane with 3 points
         try {

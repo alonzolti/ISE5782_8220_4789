@@ -1,18 +1,17 @@
 package unittests.primitives;
 
-import primitives.*;
-import geometries.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import primitives.*;
 
 public class RayTest {
     @Test
-    void testFindClosestPoint(){
+    void testFindClosestPoint() {
         Ray ray = new Ray(new Point(0,0,0), new Vector(1,0,0));
         List<Point> points; 
             Point p1 = new Point(0.5,1,0);
@@ -28,7 +27,7 @@ public class RayTest {
         //================ Boundary Value Tests =====================
         //TC01: empty list
         points.clear();
-        assertEquals(null, ray.findClosestPoint(points),"boudary vslue - empty. is'nt working");
+        assertNull(ray.findClosestPoint(points),"boudary vslue - empty. is'nt working");
         //TC02: the closest point is the first
         points.clear();
         points.add(p2);
@@ -43,3 +42,4 @@ public class RayTest {
         assertEquals(p2, ray.findClosestPoint(points),"the point is in the last isn't working");
     }
 }
+
