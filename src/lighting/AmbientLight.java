@@ -1,7 +1,7 @@
-package unittests.renderer.lighting;
+package lighting;
 
 import javafx.scene.paint.Color;
-import primitives.Double3;
+import primitives.*;
 
 public class AmbientLight {
     Color intensity;
@@ -11,6 +11,9 @@ public class AmbientLight {
     }
     public AmbientLight() {
         intensity = Color.BLACK;
+    }
+    public Color getIntensity() {
+        return intensity;
     }
     
 }
