@@ -53,8 +53,19 @@ public class Ray {
      * @return return the closest point to the satart of the ray
      */
     public Point findClosestPoint(List<Point> points){
-        //TODO: the function
-        return null;
+        Point closestPoint = null;
+        double distance;
+        if(!points.isEmpty()){
+            distance = p0.distance(points.get(0));
+            closestPoint = points.get(0);
+            for(int i = 0; i < points.size(); i++){
+                if(p0.distance(points.get(i)) < distance){
+                    closestPoint = points.get(i);
+                    distance = p0.distance(points.get(i));
+                }
+            }
+        }
+        return closestPoint;
     }
 
 

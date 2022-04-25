@@ -1,7 +1,7 @@
 package lighting;
 
-import javafx.scene.paint.Color;
 import primitives.*;
+//import javafx.scene.paint.Color;
 
 public class AmbientLight {
     Color intensity;
