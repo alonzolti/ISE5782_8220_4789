@@ -128,7 +128,7 @@ public class Camera {
         int nY = imageWriter.getNy();
         for(int i=0;i<nX;++i)
             for(int j=0;j<nY;++j)
-                imageWriter.writePixel(i, j, castRay(constructRay(nX, nY, j, i)));
+                imageWriter.writePixel(j, i, castRay(constructRay(nX, nY, j, i)));
     }
 
     /**
