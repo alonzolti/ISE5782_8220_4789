@@ -1,8 +1,8 @@
 package scene;
 
 import geometries.Geometries;
-import javafx.scene.AmbientLight;
-import javafx.scene.paint.Color;
+import lighting.*;
+import primitives.*;
 
 public class Scene {
     public String name;

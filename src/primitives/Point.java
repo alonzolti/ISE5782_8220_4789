@@ -7,6 +7,11 @@ public class Point {
     final Double3 xyz;
 
     /**
+	 * Zero triad (0,0,0)
+	 */
+	public static final Point ZERO = new Point(Double3.ZERO);
+
+    /**
      * constructor
      * 
      * @param xyz Double3 type, have 3 coordinates

@@ -25,16 +25,16 @@ public class RayTest {
         points.add(p3);
         assertEquals(p2, ray.findClosestPoint(points),"the point is in the middle isn't working");
         //================ Boundary Value Tests =====================
-        //TC01: empty list
+        //TC11: empty list
         points.clear();
         assertNull(ray.findClosestPoint(points),"boudary vslue - empty. is'nt working");
-        //TC02: the closest point is the first
+        //TC12: the closest point is the first
         points.clear();
         points.add(p2);
         points.add(p1);
         points.add(p3);
         assertEquals(p2, ray.findClosestPoint(points),"the point is in the first isn't working");
-        //TC02: the closest point is the first
+        //TC13: the closest point is the first
         points.clear();
         points.add(p1);
         points.add(p3);

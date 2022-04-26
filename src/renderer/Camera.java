@@ -5,6 +5,8 @@ import primitives.*;
 
 import static primitives.Util.isZero;
 
+import java.util.MissingResourceException;
+
 public class Camera {
     private Point location;
     private Vector vUp;
@@ -13,7 +15,8 @@ public class Camera {
     private double height;
     private double width;
     private double distance;
-    
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
     
     /** 
      * @return double
@@ -67,6 +70,26 @@ public class Camera {
         return this;
     }
     
+    /**
+     * setter for image writer field
+     * @param imageWriter
+     * @return camera
+     */
+    public Camera setImageWriter(ImageWriter imageWriter){
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * setter for rayTracer field
+     * @param rayTracer
+     * @return camera
+     */
+    public Camera setRayTracer(RayTracerBase rayTracer){
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
     /** 
      * the function gets a specific pixel, ans returns the ray that goes from camera throgh that pixel
      * as learned in the theorethic course
@@ -94,4 +117,56 @@ public class Camera {
         Ray ray = new Ray(location, pIJ.subtract(location));
         return ray;
     }
+
+    /**
+     * check that all the fields in camera aren't default values
+     */
+    public void renderImage(){
+        if(location == null || vUp == null || vRight == null || vTo == null || height == 0 || width == 0 || distance == 0 || imageWriter == null || rayTracer == null)
+            throw new MissingResourceException("some of the fields are null", "Camera", null);
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for(int i=0;i<nX;++i)
+            for(int j=0;j<nY;++j)
+                imageWriter.writePixel(i, j, castRay(constructRay(nX, nY, j, i)));
+    }
+
+    /**
+     * the function create a net with specific color and interval
+     * @param interval interval of the net
+     * @param color color of the net
+     */
+    public void printGrid(int interval, Color color){
+        if(imageWriter == null)
+            throw new MissingResourceException("image writer field is null","Camera", null);
+        for(int i = 0;i<imageWriter.getNx();i += interval)
+            for(int j=0;j<imageWriter.getNy();++j)
+                imageWriter.writePixel(i, j, color);
+
+        for(int i = 0;i<imageWriter.getNx();++i)
+            for(int j=0;j<imageWriter.getNy();j += interval)
+                imageWriter.writePixel(i, j, color);
+    }
+
+    /**
+     * the function write the image.
+     * using the function in imageWriter
+     */
+    public void writeToImage(){
+        if(imageWriter == null)
+            throw new MissingResourceException("image writer field is null","Camera", null);
+        imageWriter.writeToImage();
+    }
+
+    /**
+     * the fucntion return the color that the ray pointing at
+     * @param ray
+     * @return
+     */
+    public Color castRay(Ray ray){
+        return rayTracer.traceRay(ray);
+    }
+
+
+
 }

@@ -13,8 +13,8 @@ public class ImageWriterTest {
         ImageWriter image = new ImageWriter("grid", nX, nY);
         Color black = new Color(200,200,200);
         Color purple = new Color(200,0,200);
-        for(int j = 0; j > nX; j++){
-           //grid 16 X 10
+        for(int j = 0; j < nX; j++){
+            //grid 16 X 10
             //makesa blck image with a purple grid
             for(int i = 0; i< nY; i++)
             {
