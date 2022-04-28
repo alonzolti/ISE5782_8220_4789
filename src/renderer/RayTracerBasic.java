@@ -5,7 +5,9 @@ import java.util.List;
 
 import primitives.*;
 import scene.*;
-
+/**
+ * a simple class for trace the ray
+ */
 public class RayTracerBasic extends RayTracerBase {
 
     /**

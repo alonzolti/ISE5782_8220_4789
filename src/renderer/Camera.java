@@ -7,6 +7,9 @@ import static primitives.Util.isZero;
 
 import java.util.MissingResourceException;
 
+/**
+ * class Camera represent a camera view
+ */
 public class Camera {
     private Point location;
     private Vector vUp;
@@ -19,6 +22,7 @@ public class Camera {
     private RayTracerBase rayTracer;
     
     /** 
+     * getter for height
      * @return double
      */
     public double getHeight() {
@@ -26,6 +30,7 @@ public class Camera {
     }
     
     /** 
+     * getter for width
      * @return double
      */
     public double getWidth() {
@@ -33,11 +38,19 @@ public class Camera {
     }
     
     /** 
+     * getter for distance
      * @return double 
      */
     public double getDistance() {
         return distance;
     }
+
+    /**
+     * constructor
+     * @param location location of the camera
+     * @param vUp vector up
+     * @param vTo vector forward
+     */
     public Camera(Point location, Vector vUp, Vector vTo) {
         this.location = location;
         this.vUp = vUp.normalize();
@@ -51,6 +64,7 @@ public class Camera {
     }
     
     /** 
+     * setter for the view plane
      * @param width
      * @param height
      * @return Camera
@@ -62,6 +76,7 @@ public class Camera {
     }
     
     /** 
+     * setter for distance
      * @param distance
      * @return Camera
      */
@@ -93,11 +108,11 @@ public class Camera {
     /** 
      * the function gets a specific pixel, ans returns the ray that goes from camera throgh that pixel
      * as learned in the theorethic course
-     * @param nX
-     * @param nY
-     * @param j
-     * @param i
-     * @return Ray
+     * @param nX number of pixels in axis x
+     * @param nY number of pixels in axis y
+     * @param j pixel in column j
+     * @param i pixel in column i
+     * @return Ray ray the goes through the middle of the pixel
      */
     public Ray constructRay(int nX, int nY, int j, int i){
         // firstly - find the pixel center point
@@ -120,6 +135,7 @@ public class Camera {
 
     /**
      * check that all the fields in camera aren't default values
+     * and then, write the color of the pixel into the image
      */
     public void renderImage(){
         if(location == null || vUp == null || vRight == null || vTo == null || height == 0 || width == 0 || distance == 0 || imageWriter == null || rayTracer == null)
