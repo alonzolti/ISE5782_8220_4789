@@ -3,7 +3,6 @@ package scene;
 import geometries.Geometries;
 import lighting.*;
 import primitives.*;
-
 public class Scene {
     public String name;
     public Color background;
@@ -30,5 +29,10 @@ public class Scene {
         return this;
     }
     
+    public Scene setXml(String path)
+    {
+        
+        return this;
+    }
 
 }
