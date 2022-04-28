@@ -15,11 +15,9 @@ public class PlaneTest {
     void testConstructorPoints(){
         // ============ Equivalence Partitions Tests ==============
         // TC01: trying build correct plane with 3 points
-        try {
-            new Plane(new Point(1, 1, 1),new Point(2, 2, 2),new Point(2, 5, 6));
-        } catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct plane");
-        }
+        assertDoesNotThrow(
+            () -> new Plane(new Point(1, 1, 1),new Point(2, 2, 2),new Point(2, 5, 6)),
+            "Failed constructing a correct plane");
 
         //TC02: first and second points are the same
         assertThrows(IllegalArgumentException.class, ()-> new Plane(new Point(1,2,3),new Point(1,2,3),new Point(2,5,6)),
@@ -38,6 +36,7 @@ public class PlaneTest {
             "Build a plane when all the points were on the same line");
 
     }
+    
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============

@@ -3,6 +3,7 @@ package geometries;
 import java.util.List;
 
 import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Cylinder class represent a cylinder in space
@@ -34,29 +35,33 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point p) {
-        if(p.equals(axisRay.getP0())){ 
-            return axisRay.getDir().scale(-1);
+        Point p0 = axisRay.getP0();
+        Vector dir = axisRay.getDir();
+        Vector u;
+        try {
+            u = p.subtract(p0);
+        } catch (IllegalArgumentException ignore) {
+            return dir.scale(-1);
         }
-        /// calculating the distance from the base point and the nearest point to the normal point
+
+        /// calculating the distance from the base point and the nearest point to the
+        /// normal point
         // if the distance equals to 0 or the radius
-        double cap = p.subtract(axisRay.getP0()).dotProduct(axisRay.getDir()); 
-        if(cap == 0){
-            return axisRay.getDir().scale(-1);
-        }
-        //Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
-        //if(meetingpoint.equals(axisRay.getP0()) || meetingpoint.equals(axisRay.getP0().add(axisRay.getDir()))){ // if it is on the base.
-        if (cap == radius){
-            return axisRay.getDir(); 
-        }
+        double cap = u.dotProduct(dir);
+        if (isZero(cap)) // the point is on the lower base
+            return dir.scale(-1);
+
+        if (isZero(cap - height)) // the point is on the uppper base
+            return dir;
+
         return super.getNormal(p); // if on the side
     }
 
-    //bonus
+    // bonus
     @Override
     public List<Point> findIntersections(Ray ray) {
         // TODO Auto-generated method stub
         return super.findIntersections(ray);
     }
 
-    
 }

@@ -16,7 +16,7 @@ public class TubeTest {
         // TC01: Test that normal vector is righty
         assertEquals(new Vector(0, 1, 0), v2, "getNormal() wrong result ");
         // =============== Boundary Values Tests ==================
-        p2 = new Point(0.5, 1, 0);
+        p2 = new Point(0, 1, 0);
         v2 = t1.getNormal(p2);
         // TC01: bva the point is in front of the axis ray point.
         assertEquals(new Vector(0, 1, 0), v2, "getNormal() wrong result ");

@@ -38,6 +38,5 @@ public class GeometriesTest {
         gr = new Geometries(new Triangle(new Point(-1,-1,8),new Point(2,0,8), new Point(-1,1,8)), new Plane(new Point(0, 0, 7), new Vector(0, 0, 1)), new Sphere(new Point(0, 0, 3), 2) );
         assertEquals(4,gr.findIntersections(new Ray(new Point(0, 0, 0.5), new Vector(0, 0, 1))).size(),"all the shape intersect");
 
-
     }
 }

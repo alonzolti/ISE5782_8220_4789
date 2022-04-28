@@ -3,6 +3,8 @@ package geometries;
 import java.util.List;
 
 import primitives.*;
+import static primitives.Util.*;
+
 /**
  * triangle represents a triangle in space
  */
@@ -22,25 +24,30 @@ public class Triangle extends Polygon {
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> points = plane.findIntersections(ray);
-        if(points == null)
+        if (points == null)
             return null;
-        Vector v1,v2,v3;
-        v1 = vertices.get(0).subtract(ray.getP0());
-        v2 = vertices.get(1).subtract(ray.getP0());
-        v3 = vertices.get(2).subtract(ray.getP0());
 
+        Point p0 = ray.getP0();
+        Vector dir = ray.getDir();
+        Vector v1 = vertices.get(0).subtract(p0);
+        Vector v2 = vertices.get(1).subtract(p0);
         Vector n1 = v1.crossProduct(v2).normalize();
-        Vector n2 = v2.crossProduct(v3).normalize();
-        Vector n3 = v3.crossProduct(v1).normalize();
+        double r1 = alignZero(dir.dotProduct(n1));
+        if (r1 == 0)
+            return null;
 
-        double r1,r2,r3;
-        r1 = ray.getDir().dotProduct(n1);
-        r2 = ray.getDir().dotProduct(n2);
-        r3 = ray.getDir().dotProduct(n3);
-        if(r1 > 0 && r2 >0 && r3 > 0 || r1 < 0 && r2 < 0 && r3 < 0)
-            return points;
-        return null;
+        Vector v3 = vertices.get(2).subtract(p0);
+        Vector n2 = v2.crossProduct(v3).normalize();
+        double r2 = alignZero(dir.dotProduct(n2));
+        if (r1 * r2 <= 0)
+            return null;
+
+        Vector n3 = v3.crossProduct(v1).normalize();
+        double r3 = alignZero(dir.dotProduct(n3));
+        if (r1 * r3 <= 0)
+            return null;
+
+        return points;
     }
 
-    
 }

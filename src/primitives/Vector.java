@@ -108,15 +108,5 @@ public class Vector extends Point {
     public String toString() {
         return "Vector: " + super.toString();
     }
-    /**
-     * multiplying the vector by const
-     * 
-     * @return Vector
-     */
-    public Vector sculMult(double skul){
-        double dotPX = xyz.d1 * skul;
-        double dotPY = xyz.d2 * skul;
-        double dotPZ = xyz.d3 * skul;
-        return new Vector(dotPX, dotPY, dotPZ);
-    }
+
 }

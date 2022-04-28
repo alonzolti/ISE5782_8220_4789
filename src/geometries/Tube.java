@@ -3,6 +3,7 @@ package geometries;
 import java.util.List;
 
 import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Tube class represents a tube in space
@@ -42,15 +43,12 @@ public class Tube implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
-        double cap = -1 * axisRay.getP0().subtract(p).dotProduct(axisRay.getDir());
-        Point meetingpoint = axisRay.getP0().add(axisRay.getDir().normalize().scale(cap));
-        if(p.distance(meetingpoint) == radius){
-            return p.subtract(meetingpoint);
-        }
-        return null;
+        double cap = alignZero(p.subtract(axisRay.getP0()).dotProduct(axisRay.getDir()));
+        Point meetingpoint = axisRay.getPoint(cap);
+        return p.subtract(meetingpoint);
     }
 
-    //bonus
+    // bonus
     @Override
     public List<Point> findIntersections(Ray ray) {
         // TODO Auto-generated method stub

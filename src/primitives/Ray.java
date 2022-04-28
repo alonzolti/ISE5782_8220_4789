@@ -1,13 +1,14 @@
 package primitives;
 
+import static primitives.Util.*;
 import java.util.List;
 
 /**
  * Ray class represents a ray in the space
  */
 public class Ray {
-    final Point p0;
-    final Vector dir;
+    private final Point p0;
+    private final Vector dir;
 
     /**
      * constructor, normalizez the vector before saving it
@@ -44,7 +45,7 @@ public class Ray {
      * @return return the actual point
      */
     public Point getPoint(double t){
-        return p0.add(dir.scale(t));
+        return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 
     /**
@@ -78,11 +79,8 @@ public class Ray {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (obj == null || !(obj instanceof Ray other))
             return false;
-        if (!(obj instanceof Ray))
-            return false;
-        Ray other = (Ray) obj;
         return p0.equals(other.p0) && dir.equals(other.dir);
     }
 }

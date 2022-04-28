@@ -4,28 +4,28 @@ package primitives;
  * Point class represents a point in the space
  */
 public class Point {
-    final Double3 xyz;
+    protected final Double3 xyz;
 
     /**
-	 * Zero triad (0,0,0)
-	 */
-	public static final Point ZERO = new Point(Double3.ZERO);
+     * Zero triad (0,0,0)
+     */
+    public static final Point ZERO = new Point(Double3.ZERO);
 
     /**
-     * constructor
+     * Constructs point with a triad of x/y/z coordinate values
      * 
-     * @param xyz Double3 type, have 3 coordinates
+     * @param xyz have 3 coordinates
      */
     Point(Double3 xyz) {
         this.xyz = xyz;
     }
 
     /**
-     * constructor
+     * Constructs point with x/y/z coordinate values
      * 
-     * @param x, x cordinate
-     * @param y, y coordinate
-     * @param z, z coordinate
+     * @param x cordinate value
+     * @param y coordinate value
+     * @param z coordinate value
      */
     public Point(double x, double y, double z) {
         xyz = new Double3(x, y, z);
@@ -33,28 +33,28 @@ public class Point {
 
     /**
      * getter for x coordinate
+     * 
      * @return x coordiante (double)
      */
-    public double getX()
-    {
+    public double getX() {
         return xyz.d1;
     }
 
     /**
      * getter for y coordiante
+     * 
      * @return y coordiante (double)
      */
-    public double getY()
-    {
+    public double getY() {
         return xyz.d2;
     }
 
     /**
      * getter for z coordiante
+     * 
      * @return z coordiante (double)
      */
-    public double getZ()
-    {
+    public double getZ() {
         return xyz.d3;
     }
 
@@ -111,11 +111,8 @@ public class Point {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (obj == null || !(obj instanceof Point other))
             return false;
-        if (!(obj instanceof Point))
-            return false;
-        Point other = (Point) obj;
         return xyz.equals(other.xyz);
     }
 }
