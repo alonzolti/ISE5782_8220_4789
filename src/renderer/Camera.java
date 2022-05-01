@@ -53,7 +53,8 @@ public class Camera {
      * @param location location of the camera
      * @param vUp      vector up
      * @param vTo      vector forward
-     * @throws IllegalArgumentException if the vectors in the parameters are not orthogonal
+     * @throws IllegalArgumentException if the vectors in the parameters are not
+     *                                  orthogonal
      */
     public Camera(Point location, Vector vUp, Vector vTo) {
         if (!isZero(vUp.dotProduct(vTo)))
@@ -144,8 +145,10 @@ public class Camera {
     /**
      * check that all the fields in camera aren't default values
      * and then, write the color of the pixel into the image
+     * 
+     * @return the object itself
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if (location == null || vUp == null || vRight == null || vTo == null || height == 0 || width == 0
                 || distance == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("some of the fields are null", "Camera", null);
@@ -154,6 +157,7 @@ public class Camera {
         for (int i = 0; i < nX; ++i)
             for (int j = 0; j < nY; ++j)
                 imageWriter.writePixel(j, i, castRay(constructRay(nX, nY, j, i)));
+        return this;
     }
 
     /**

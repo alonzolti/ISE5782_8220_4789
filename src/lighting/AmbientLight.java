@@ -5,8 +5,7 @@ import primitives.*;
 /**
  * the class represent a ambient light in a scene
  */
-public class AmbientLight {
-    Color intensity;
+public class AmbientLight extends Light{
     
     /**
      * constructor
@@ -15,22 +14,13 @@ public class AmbientLight {
      */
     public AmbientLight(Color Ia, Double3 Ka) {
         //Ip = Ka * Ia
-        intensity = Ia.scale(Ka);
+        super(Ia.scale(Ka));
     }
     
     /**
      * default constructor
      */
     public AmbientLight() {
-        intensity = Color.BLACK;
+        super(Color.BLACK);
     }
-
-    /**
-     * getter for intensity field
-     * @return  intensity
-     */
-    public Color getIntensity() {
-        return intensity;
-    }
-    
 }
