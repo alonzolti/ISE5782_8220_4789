@@ -19,6 +19,23 @@ public class Material {
         return this;
     }
 
+    public Double3 getKd() {
+        return kD;
+    }
+
+    public Double3 getKs() {
+        return kS;
+    }
+
+
+    public int getnShininess() {
+        return nShininess;
+    }
+
+    public void setnShininess(int nShininess) {
+        this.nShininess = nShininess;
+    }
+
     /**
      * setter for kS field
      * 

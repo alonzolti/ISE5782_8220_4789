@@ -1,4 +1,5 @@
 package lighting;
+
 import static primitives.Util.*;
 import primitives.*;
 
@@ -57,10 +58,9 @@ public class PointLight extends Light implements LightSource {
 
     @Override
     public Color getIntensity(Point p) {
-        
         Color color = getIntensity();
         double distance = alignZero(position.distance(p));
-        return color.scale(1/(kC + kL * distance + kQ * distance * distance));
+        return color.scale(1 / (kC + kL * distance + kQ * distance * distance));
     }
 
     @Override

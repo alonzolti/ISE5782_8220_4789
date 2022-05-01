@@ -1,22 +1,23 @@
 package lighting;
 
 import primitives.*;
-//import javafx.scene.paint.Color;
+
 /**
  * the class represent a ambient light in a scene
  */
-public class AmbientLight extends Light{
-    
+public class AmbientLight extends Light {
+
     /**
      * constructor
-     * @param Ia 
-     * @param Ka 
+     * 
+     * @param Ia
+     * @param Ka
      */
     public AmbientLight(Color Ia, Double3 Ka) {
-        //Ip = Ka * Ia
+        // Ip = Ka * Ia
         super(Ia.scale(Ka));
     }
-    
+
     /**
      * default constructor
      */
