@@ -11,14 +11,14 @@ import static primitives.Util.*;
  * Plane class represent a plane in space
  */
 public class Plane implements Geometry {
-    final Point q0;
-    final Vector normal;
+    private final Point q0;
+    private final Vector normal;
 
     /**
      * constructor that get normal and a point
      * 
-     * @param q0     Point, point on the plane
-     * @param normal Vector, normal to the plane
+     * @param q0     point on the plane
+     * @param normal normal to the plane
      */
     public Plane(Point q0, Vector normal) {
         this.q0 = q0;
@@ -38,14 +38,13 @@ public class Plane implements Geometry {
 
         // if the 3 points on the same line, then we would get vector 0
         normal = v1.crossProduct(v2).normalize();
-
         this.q0 = a;
     }
 
     /**
      * getter for q0 field
      * 
-     * @return reference point of hte plane
+     * @return reference point of the plane
      */
     public Point getQ0() {
         return q0;
@@ -54,7 +53,7 @@ public class Plane implements Geometry {
     /**
      * getter for normal field
      * 
-     * @return normal to thje plane
+     * @return normal to the plane
      */
     public Vector getNormal() {
         return normal;
@@ -79,7 +78,6 @@ public class Plane implements Geometry {
         } catch (IllegalArgumentException ignore) {
             return null;
         }
-
         double t = alignZero(normal.dotProduct(u) / nv);
         return t <= 0 ? null : List.of(ray.getPoint(t));
     }

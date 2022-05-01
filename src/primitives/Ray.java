@@ -42,9 +42,12 @@ public class Ray {
     /**
      * calculate spacific place on the ray
      * @param t the scalar
-     * @return return the actual point
+     * @return return point on the ray
+     * @throws IllegalArgumentException if t is negative
      */
     public Point getPoint(double t){
+        if(t < 0)
+            throw new IllegalArgumentException("t cannot be negative");
         return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 

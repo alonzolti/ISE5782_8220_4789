@@ -98,7 +98,8 @@ public class Vector extends Point {
     /**
      * calculate the normalize vector
      * 
-     * @return Vector, normalized vector in the same direction as the original vector
+     * @return Vector, normalized vector in the same direction as the original
+     *         vector
      */
     public Vector normalize() {
         return scale(1 / length());
@@ -107,6 +108,11 @@ public class Vector extends Point {
     @Override
     public String toString() {
         return "Vector: " + super.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Vector && super.equals(obj);
     }
 
 }

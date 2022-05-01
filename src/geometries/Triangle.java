@@ -11,7 +11,7 @@ import static primitives.Util.*;
 public class Triangle extends Polygon {
 
     /**
-     * constructor
+     * constructor that get 3 points 
      * 
      * @param v1 point 1
      * @param v2 point 2

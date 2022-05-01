@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 
 /**
- * unit tests for primitives.Vector class
+ * unit tests for {@link primitives.Vector} class
  */
 public class VectorTest {
     /**
@@ -20,13 +20,16 @@ public class VectorTest {
         Vector v3 = new Vector(-1, -2, -3);
 
         // TC01: test adding two vectors
-        assertEquals(new Vector(-1, -3, 10), v1.add(v2));
+        assertEquals(new Vector(-1, -3, 10), v1.add(v2), "wrong add result");
 
         // =============== Boundary Values Tests ==================
-        // TC11: test addin two vectors that their result is vector zero
-        assertThrows(IllegalArgumentException.class, () -> v1.add(v3));
+        // TC11: test adding two vectors that their result is vector zero
+        assertThrows(IllegalArgumentException.class, () -> v1.add(v3), "creating zero vector");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#CrossProduct(primitives.Vector)}
+     */
     @Test
     void testCrossProduct() {
         Vector v1 = new Vector(1, 2, 3);
@@ -48,9 +51,11 @@ public class VectorTest {
         Vector v3 = new Vector(-2, -4, -6);
         assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),
                 "crossProduct() for parallel vectors does not throw an exception");
-
     }
 
+    /**
+     * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}
+     */
     @Test
     void testDotProduct() {
         Vector v1 = new Vector(3, 6, -19);
@@ -60,51 +65,82 @@ public class VectorTest {
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test simple calculation of dot product
-        assertEquals(-24, v1.dotProduct(v2));
+        assertEquals(-24, v1.dotProduct(v2), "wrong dotProduct result");
 
         // =============== Boundary Values Tests ==================
-        // TC11: test, zero vector from dot product of orthogonal vectors
-        assertEquals(0, v3.dotProduct(v4));
+        // TC11: test, zero from dot product of orthogonal vectors
+        assertEquals(0, v3.dotProduct(v4), "wrong dotProduct between orthogonal vectors");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#length()}
+     */
     @Test
     void testLength() {
         Vector v1 = new Vector(4, 4, 7);
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test simple calculation of dot product
-        assertEquals( 9,v1.length());
+        assertEquals(9, v1.length(), "wrong length");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#lengthSquared()}
+     */
     @Test
     void testLengthSquared() {
         Vector v1 = new Vector(4, 4, 7);
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test simple calculation of dot product
-        assertEquals( 81,v1.lengthSquared());
+        assertEquals(81, v1.lengthSquared(), "wrong length squared");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#normalize()}
+     */
     @Test
     void testNormalize() {
         Vector v1 = new Vector(4, 4, 7);
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test simple calculation of dot product
-        assertEquals( new Vector(0.444444444444444444444444,0.44444444444444444444444444,0.77777777777777777777),v1.normalize());
+        assertEquals(new Vector(0.444444444444444444444444, 0.44444444444444444444444444, 0.77777777777777777777),
+                v1.normalize(), "wrong normalization of the vector");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#scale(double)}
+     */
     @Test
     void testScale() {
-        Vector v1 = new Vector(4,7,-2);
+        Vector v1 = new Vector(4, 7, -2);
         double scale1 = 2;
         double scale2 = 0;
+
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test simple calculation of scale
-        assertEquals(new Vector(8,14,-4), v1.scale(scale1));
+        assertEquals(new Vector(8, 14, -4), v1.scale(scale1), "wrong scale result");
 
         // =============== Boundary Values Tests ==================
         // TC11: test, zero vector
-        assertThrows(IllegalArgumentException.class, () -> v1.scale(scale2));
+        assertThrows(IllegalArgumentException.class, () -> v1.scale(scale2), "scaling create zero vector");
+    }
+
+    /**
+     * Test method for {@link primitives.Vector#subtract(primitives.Vector)}
+     */
+    @Test
+    void testSubtract() {
+        Vector v1 = new Vector(2, 2, 2);
+        Vector v2 = new Vector(1, 2, 5);
+
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Test simple subtraction
+        assertEquals(new Vector(1, 0, -3), v1.subtract(v2), "wrong substraction");
+
+        // =============== Boundary Values Tests ==================
+        // TC11: test, zero vector
+        assertThrows(IllegalArgumentException.class, () -> v1.subtract(v1), "substractingi create vector zero");
     }
 }

@@ -9,8 +9,8 @@ import static primitives.Util.*;
  * Tube class represents a tube in space
  */
 public class Tube implements Geometry {
-    final Ray axisRay;
-    final double radius;
+    protected final Ray axisRay;
+    protected final double radius;
 
     /**
      * constructor

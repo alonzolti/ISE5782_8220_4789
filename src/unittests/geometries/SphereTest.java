@@ -11,7 +11,13 @@ import java.util.List;
 import geometries.*;
 import primitives.*;
 
+/**
+ * unit tests for {@link geometries.Sphere} class
+ */
 public class SphereTest {
+    /**
+     * Test method for {@link geometries.Sphere#getNormal(Point)}
+     */
     @Test
     void testGetNormal() {
         Sphere sphere = new Sphere(new Point(0,0,0), 5);
@@ -21,6 +27,9 @@ public class SphereTest {
         assertEquals(new Vector(0,1,0), sphere.getNormal(new Point(0,5,0)),"Wrong Normal");
     }
 
+    /**
+     * Test method for {@link geometries.Sphere#findIntersections(Ray)}
+     */
     @Test
     public void testFindIntersections() {
         Sphere sphere = new Sphere(new Point (1, 0, 0),1d);

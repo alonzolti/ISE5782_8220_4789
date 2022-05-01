@@ -10,7 +10,7 @@ import static primitives.Util.*;
  */
 public class Cylinder extends Tube {
 
-    final double height;
+    private final double height;
 
     /**
      * constructor

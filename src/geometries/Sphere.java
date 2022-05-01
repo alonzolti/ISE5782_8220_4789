@@ -7,12 +7,12 @@ import primitives.*;
  * Sphere class represents sphere in space
  */
 public class Sphere implements Geometry {
-    final Point center;
-    final double radius;
-    final double radius2;
+    private final Point center;
+    private final double radius;
+    private final double radius2;
 
     /**
-     * constructor
+     * constructor that get point and a radius and create a sphere
      * 
      * @param center center of the sphere
      * @param radius radius of the sphere
@@ -66,7 +66,8 @@ public class Sphere implements Geometry {
         double th = Math.sqrt(th2);
 
         double t2 = Util.alignZero(tm + th);
-        if (t2 <= 0) return null;
+        if (t2 <= 0)
+            return null;
         Point p2 = ray.getPoint(t2);
 
         double t1 = Util.alignZero(tm - th);

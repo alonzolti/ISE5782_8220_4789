@@ -17,14 +17,16 @@ public class Geometries implements Intersectable {
     /**
      * constructor that get list of geometries shapes
      * 
-     * @param geometries
+     * @param geometries shapes
      */
     public Geometries(Intersectable... geometries) {
         add(geometries);
     }
 
     /**
-     * the function add a set of geometries shapes to the list
+     * add a set of geometries shapes to the list
+     * 
+     * @param geometries shapes
      */
     public void add(Intersectable... geometries) {
         if (geometries.length != 0)
