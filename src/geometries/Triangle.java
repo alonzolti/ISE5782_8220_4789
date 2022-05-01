@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -22,8 +23,8 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> points = plane.findIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+        List<GeoPoint> points = plane.findGeoIntersections(ray);
         if (points == null)
             return null;
 
@@ -47,7 +48,11 @@ public class Triangle extends Polygon {
         if (r1 * r3 <= 0)
             return null;
 
-        return points;
+        List<GeoPoint> temp = new LinkedList<GeoPoint>();
+        for (GeoPoint geoPoint : points) {
+            temp.add(new GeoPoint(this, geoPoint.point));
+        }
+        return temp;
     }
 
 }

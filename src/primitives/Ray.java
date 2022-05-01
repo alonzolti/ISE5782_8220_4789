@@ -1,5 +1,6 @@
 package primitives;
 
+import geometries.Intersectable.GeoPoint;
 import static primitives.Util.*;
 import java.util.List;
 
@@ -41,37 +42,49 @@ public class Ray {
 
     /**
      * calculate spacific place on the ray
+     * 
      * @param t the scalar
      * @return return point on the ray
      * @throws IllegalArgumentException if t is negative
      */
-    public Point getPoint(double t){
-        if(t < 0)
+    public Point getPoint(double t) {
+        if (t < 0)
             throw new IllegalArgumentException("t cannot be negative");
         return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 
     /**
-     *
+     * find closest point to the start of the ray
+     * 
      * @param list of point
      * @return return the closest point to the satart of the ray
      */
-    public Point findClosestPoint(List<Point> points){
-        Point closestPoint = null;
+    public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+
+    /**
+     * find the closest geoPoint to the start of the ray
+     * 
+     * @param geoPoints list of geoPoints
+     * @return return the closest geoPoint
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
+        GeoPoint closestPoint = null;
         double distance;
-        if(!points.isEmpty()){
-            distance = p0.distance(points.get(0));
-            closestPoint = points.get(0);
-            for(int i = 0; i < points.size(); i++){
-                if(p0.distance(points.get(i)) < distance){
-                    closestPoint = points.get(i);
-                    distance = p0.distance(points.get(i));
+        if(!geoPoints.isEmpty()){
+            distance = p0.distance(geoPoints.get(0).point);
+            closestPoint = geoPoints.get(0);
+            for(int i = 0; i < geoPoints.size(); i++){
+                if(p0.distance(geoPoints.get(i).point) < distance){
+                    closestPoint = geoPoints.get(i);
+                    distance = p0.distance(geoPoints.get(i).point);
                 }
             }
         }
         return closestPoint;
     }
-
 
     @Override
     public String toString() {
@@ -86,4 +99,5 @@ public class Ray {
             return false;
         return p0.equals(other.p0) && dir.equals(other.dir);
     }
+
 }

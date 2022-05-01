@@ -8,7 +8,7 @@ import static primitives.Util.*;
 /**
  * Tube class represents a tube in space
  */
-public class Tube implements Geometry {
+public class Tube extends Geometry {
     protected final Ray axisRay;
     protected final double radius;
 
@@ -48,9 +48,9 @@ public class Tube implements Geometry {
         return p.subtract(meetingpoint);
     }
 
-    // bonus
+    //bonus
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         // TODO Auto-generated method stub
         return null;
     }

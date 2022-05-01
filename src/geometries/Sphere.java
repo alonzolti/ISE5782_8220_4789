@@ -6,7 +6,7 @@ import primitives.*;
 /**
  * Sphere class represents sphere in space
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
     private final Point center;
     private final double radius;
     private final double radius2;
@@ -47,7 +47,7 @@ public class Sphere implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         // Ray -> P = P0 + t*v, t >0
         // Sphere points: |P-O|^2 - r^2 = 0
 
@@ -55,7 +55,7 @@ public class Sphere implements Geometry {
         try {
             u = center.subtract(ray.getP0());
         } catch (IllegalArgumentException ignore) {
-            return List.of(ray.getPoint(radius));
+            return List.of(new GeoPoint(this, ray.getPoint(radius)));
         }
 
         double tm = Util.alignZero(ray.getDir().dotProduct(u));
@@ -68,9 +68,10 @@ public class Sphere implements Geometry {
         double t2 = Util.alignZero(tm + th);
         if (t2 <= 0)
             return null;
-        Point p2 = ray.getPoint(t2);
+        GeoPoint p2 = new GeoPoint(this, ray.getPoint(t2));
 
         double t1 = Util.alignZero(tm - th);
-        return t1 <= 0 ? List.of(p2) : List.of(ray.getPoint(t1), p2);
+        return t1 <= 0 ? List.of(p2) : List.of(new GeoPoint(this, ray.getPoint(t1)), p2);
+
     }
 }
