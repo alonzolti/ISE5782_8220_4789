@@ -2,7 +2,7 @@ package unittests.renderer;
 
 import org.junit.jupiter.api.Test;
 
-import lighting.AmbientLight;
+import lighting.*;
 import geometries.*;
 import primitives.*;
 import renderer.*;
@@ -44,7 +44,37 @@ public class RenderTests {
 		camera.printGrid(100, new Color(YELLOW));
 		camera.writeToImage();
 	}
-
+	// for stage 4.
+	/**
+     * test for spinnig the camera, the spin function is in camera and not in imageWriter
+     * but it easier to test it from the image Writer.
+     */
+    @Test
+    public void spinnigCameraTest(){
+		// ============ Equivalence Partitions Tests ==============
+		Scene scene = new Scene("Test scene")//
+				.setAmbientLight(new AmbientLight(new Color(255, 191, 191), //
+						new Double3(1, 1, 1))) //
+				.setBackground(new Color(75, 127, 90));
+		
+		scene.lights.add(new PointLight(new Color(800, 500, 0), new Point(-50, -50, 25)).setKl(0.001).setKq(0.0002));
+		scene.geometries.add(new Sphere(new Point(0, 0, -100), 50d),
+				new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)), // up
+																												// left
+				new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100)), // down
+																												// left
+				new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))); // down
+																												// right
+		Camera camera = new Camera(Point.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
+				.setVPDistance(100) //
+				.setVPSize(500d, 500d) //
+				.setImageWriter(new ImageWriter("base render test", 1000, 1000))
+				.setRayTracer(new RayTracerBasic(scene));
+		camera.renderImage();
+		camera.printGrid(100, new Color(YELLOW));
+		camera.writeToImage();		
+		//TODO spin for every direction.
+    }
 	// For stage 6 - please disregard in stage 5
 	/**
 	 * Produce a scene with basic 3D model - including individual lights of the
