@@ -62,6 +62,7 @@ public class Scene {
 
     /**
      * setter for lights field
+     * 
      * @param lights set of lights
      * @return the object itself
      */
