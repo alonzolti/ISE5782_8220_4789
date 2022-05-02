@@ -65,6 +65,88 @@ public class Camera {
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
 
+        /**
+     * spinning the camera up and down, around the vRight vector
+     * 
+     * @param angle
+     * @return the camera
+     */
+    public Camera spinUpDown(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
+        // moving only the vUp and vTo vectors.
+        double angleRad = Math.toRadians(angle);
+        double cos0 = Math.cos(angleRad);
+        double sin0 = Math.sin(angleRad);
+        if (isZero(cos0)) { // 90
+            vTo = vUp.scale(sin0);
+        } else if (isZero(sin0)) {
+            vTo = vUp.scale(cos0);// if angle is zero - mult by one(no change)...
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
+            vTo = vTo.scale(cos0)
+                .add(vRight.crossProduct(vTo).scale(sin0));
+        }
+        vUp = vRight.crossProduct(vTo).normalize();
+        return this;
+    }
+    /**
+     * spinnig the camera left and right, around the vUp vector
+     * @param angle
+     * @return
+     */
+    public Camera spinLeftRight(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
+        // moving only the vTo and vRight vectors.
+        double angleRad = Math.toRadians(angle);
+        double cos0 = Math.cos(angleRad);
+        double sin0 = Math.sin(angleRad);
+        if (isZero(cos0)) { // 90
+            vRight = vTo.scale(sin0);
+        } else if (isZero(sin0)) {
+            vRight = vTo.scale(cos0);// if angle is zero - mult by one(no change)...
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
+            vRight = vRight.scale(cos0)
+                .add(vUp.crossProduct(vRight).scale(sin0));
+        }
+        this.vTo = vRight.crossProduct(vUp).scale(-1).normalize();
+        return this;
+    }
+    /**
+     * spinnig the camera, around the to vector
+     * @param angle
+     * @return
+     */
+    public Camera spin(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
+        // moving only the vRight and vUp vectors.
+        double angleRad = Math.toRadians(angle);
+        double cos0 = Math.cos(angleRad);
+        double sin0 = Math.sin(angleRad);
+        if (isZero(cos0)) { // 90
+            vUp = vRight.scale(sin0);
+        } else if (isZero(sin0)) {
+            vUp = vRight.scale(cos0);// if angle is zero - mult by one(no change)...
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
+            vUp = vUp.scale(cos0)
+                .add(vTo.crossProduct(vUp).scale(sin0));
+        }
+        vRight = vTo.crossProduct(vRight).scale(-1).normalize();
+        return this;
+    }
+    public Camera moveUpDown(double angle){
+        return this;
+    }
+    public Camera moveLeftRight(double angle){
+        return this;
+    }
+    public Camera moveTowards(double angle){
+        return this;
+    }
     /**
      * setter for the view plane
      * 
