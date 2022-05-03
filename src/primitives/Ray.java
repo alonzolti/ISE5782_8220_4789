@@ -10,6 +10,7 @@ import java.util.List;
 public class Ray {
     private final Point p0;
     private final Vector dir;
+    private static final double DELTA = 0.1;
 
     /**
      * constructor, normalizez the vector before saving it
@@ -19,6 +20,20 @@ public class Ray {
      */
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
+        this.dir = dir.normalize();
+    }
+
+    /**
+     * constructor, moving the start of the ray by delta in the direction of the
+     * normal
+     * 
+     * @param p0  the start of the ray
+     * @param dir the direction of the ray
+     * @param n   the normal
+     */
+    public Ray(Point p0, Vector dir, Vector n) {
+        Vector delVector = n.scale(n.dotProduct(dir) > 0 ? DELTA : -DELTA);
+        this.p0 = p0.add(delVector);
         this.dir = dir.normalize();
     }
 
@@ -73,11 +88,11 @@ public class Ray {
     public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
         GeoPoint closestPoint = null;
         double distance;
-        if(!geoPoints.isEmpty()){
+        if (geoPoints != null && !geoPoints.isEmpty()) {
             distance = p0.distance(geoPoints.get(0).point);
             closestPoint = geoPoints.get(0);
-            for(int i = 0; i < geoPoints.size(); i++){
-                if(p0.distance(geoPoints.get(i).point) < distance){
+            for (int i = 0; i < geoPoints.size(); i++) {
+                if (p0.distance(geoPoints.get(i).point) < distance) {
                     closestPoint = geoPoints.get(i);
                     distance = p0.distance(geoPoints.get(i).point);
                 }
