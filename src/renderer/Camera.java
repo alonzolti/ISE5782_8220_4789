@@ -71,11 +71,9 @@ public class Camera {
      * @param angle
      * @return the camera
      */
-    public Camera spinUpDown(double angle) {
-        if (angle >= 360)
-            angle = angle % 360;
-        if (angle > 180)
-            angle = angle - 360; // the range of angles now is -180 to 180.
+    public Camera spinUpDown(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
         // moving only the vUp and vTo vectors.
         double angleRad = Math.toRadians(angle);
         double cos0 = Math.cos(angleRad);
@@ -84,25 +82,22 @@ public class Camera {
             vTo = vUp.scale(sin0);
         } else if (isZero(sin0)) {
             vTo = vUp.scale(cos0);// if angle is zero - mult by one(no change)...
-        } else {// rotate around the To vector using Rodrigues' rotation formula
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
             vTo = vTo.scale(cos0)
-                    .add(vRight.crossProduct(vTo).scale(sin0));
+                .add(vRight.crossProduct(vTo).scale(sin0));
         }
         vUp = vRight.crossProduct(vTo).normalize();
         return this;
     }
-
     /**
      * spinnig the camera left and right, around the vUp vector
-     * 
      * @param angle
      * @return
      */
-    public Camera spinLeftRight(double angle) {
-        if (angle >= 360)
-            angle = angle % 360;
-        if (angle > 180)
-            angle = angle - 360; // the range of angles now is -180 to 180.
+    public Camera spinLeftRight(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
         // moving only the vTo and vRight vectors.
         double angleRad = Math.toRadians(angle);
         double cos0 = Math.cos(angleRad);
@@ -111,25 +106,22 @@ public class Camera {
             vRight = vTo.scale(sin0);
         } else if (isZero(sin0)) {
             vRight = vTo.scale(cos0);// if angle is zero - mult by one(no change)...
-        } else {// rotate around the To vector using Rodrigues' rotation formula
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
             vRight = vRight.scale(cos0)
-                    .add(vUp.crossProduct(vRight).scale(sin0));
+                .add(vUp.crossProduct(vRight).scale(sin0));
         }
         this.vTo = vRight.crossProduct(vUp).scale(-1).normalize();
         return this;
     }
-
     /**
      * spinnig the camera, around the to vector
-     * 
      * @param angle
      * @return
      */
-    public Camera spin(double angle) {
-        if (angle >= 360)
-            angle = angle % 360;
-        if (angle > 180)
-            angle = angle - 360; // the range of angles now is -180 to 180.
+    public Camera spin(double angle){
+        if (angle>=360) angle = angle % 360;
+        if (angle>180) angle = angle - 360; // the range of angles now is -180 to 180.
         // moving only the vRight and vUp vectors.
         double angleRad = Math.toRadians(angle);
         double cos0 = Math.cos(angleRad);
@@ -138,23 +130,39 @@ public class Camera {
             vUp = vRight.scale(sin0);
         } else if (isZero(sin0)) {
             vUp = vRight.scale(cos0);// if angle is zero - mult by one(no change)...
-        } else {// rotate around the To vector using Rodrigues' rotation formula
+        }
+        else {//rotate around the To vector using Rodrigues' rotation formula
             vUp = vUp.scale(cos0)
-                    .add(vTo.crossProduct(vUp).scale(sin0));
+                .add(vTo.crossProduct(vUp).scale(sin0));
         }
         vRight = vTo.crossProduct(vRight).scale(-1).normalize();
         return this;
     }
-
-    public Camera moveUpDown(double angle) {
+    /**
+     * moving up
+     * @param distance
+     * @return
+     */
+    public Camera moveUpDown(double distance){
+        location = location.add(vUp.scale(distance))
         return this;
     }
-
-    public Camera moveLeftRight(double angle) {
+    /**
+     * moving left
+     * @param distance
+     * @return
+     */
+    public Camera moveLeftRight(double distance){
+        location = location.add(vRight.scale(distance))
         return this;
     }
-
-    public Camera moveTowards(double angle) {
+    /**
+     * moving towards
+     * @param distance
+     * @return
+     */
+    public Camera moveTowards(double distance){
+        location = location.add(vTo.scale(distance))
         return this;
     }
 
@@ -249,7 +257,7 @@ public class Camera {
         int nY = imageWriter.getNy();
         for (int i = 0; i < nX; ++i)
             for (int j = 0; j < nY; ++j)
-                imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
+                imageWriter.writePixel(j, i, castRay(constructRay(nX, nY, j, i)));
         return this;
     }
 
@@ -284,14 +292,11 @@ public class Camera {
     /**
      * the fucntion return the color that the ray pointing at
      * 
-     * @param nX
-     * @param nY
-     * @param j
-     * @param i
+     * @param ray
      * @return
      */
-    public Color castRay(int nX, int nY, int j, int i) {
-        return rayTracer.traceRay(constructRay(nX, nY, j, i));
+    public Color castRay(Ray ray) {
+        return rayTracer.traceRay(ray);
     }
 
 }
