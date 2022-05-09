@@ -12,7 +12,7 @@ import static primitives.Util.*;
 public class Triangle extends Polygon {
 
     /**
-     * constructor that get 3 points 
+     * constructor that get 3 points
      * 
      * @param v1 point 1
      * @param v2 point 2
@@ -23,7 +23,7 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> points = plane.findGeoIntersections(ray);
         if (points == null)
             return null;
@@ -48,11 +48,7 @@ public class Triangle extends Polygon {
         if (r1 * r3 <= 0)
             return null;
 
-        List<GeoPoint> temp = new LinkedList<GeoPoint>();
-        for (GeoPoint geoPoint : points) {
-            temp.add(new GeoPoint(this, geoPoint.point));
-        }
-        return temp;
+        return List.of(new GeoPoint(this, points.get(0).point));
     }
 
 }

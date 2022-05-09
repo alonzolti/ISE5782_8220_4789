@@ -138,7 +138,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return return the color of the diffuse
      */
     private Double3 calcDiffuse(Material material, double nl) {
-        return material.getKd().scale(Math.abs(nl));
+        return material.kD.scale(Math.abs(nl));
     }
 
     /**
@@ -150,12 +150,13 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = l.subtract(n.scale((l.dotProduct(n) * 2)));
-        return material.getKs().scale(Math.max(0, Math.pow(-v.dotProduct(r), material.getnShininess())));
+        double minusVR = alignZero(-v.dotProduct(r));
+        return minusVR <= 0 ? Double3.ZERO : material.kS.scale(Math.pow(minusVR, material.nShininess));
     }
 
     /**
      * check if the point g is unshaded
-     * 
+     * @deprecated please use transparent(...) method instead of this one
      * @param g           the point
      * @param lightSource the light source
      * @param l           the light vector
@@ -163,6 +164,8 @@ public class RayTracerBasic extends RayTracerBase {
      * @param nv          the dot product of n and v
      * @return true if the point is unshaded
      */
+    @SuppressWarnings("unused")
+    @Deprecated
     private boolean unshaded(GeoPoint g, LightSource lightSource, Vector l, Vector n, double nv) {
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(g.point, l.scale(-1), n));
         if (intersections == null)
@@ -195,7 +198,7 @@ public class RayTracerBasic extends RayTracerBase {
         Double3 ktr = new Double3(1, 1, 1);
         for (GeoPoint gp : intersections) {
             if (alignZero((gp.point.distance(p.point)) - lightDistance) <= 0) {
-                ktr = ktr.scale(gp.geometry.getMaterial().getKt());
+                ktr = ktr.scale(gp.geometry.getMaterial().kT);
                 if (ktr.equals(Double3.ZERO))
                     return Double3.ZERO;
             }

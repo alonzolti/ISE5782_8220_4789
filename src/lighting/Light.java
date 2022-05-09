@@ -1,11 +1,12 @@
 package lighting;
 
 import primitives.Color;
+
 /**
  * the class represent a light in the scene
  */
 abstract class Light {
-    private Color intensity;
+    protected final Color intensity;
 
     /**
      * constructor

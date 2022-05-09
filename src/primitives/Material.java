@@ -4,10 +4,10 @@ package primitives;
  * the class represent data about the material in the scene
  */
 public class Material {
-    public Double3 kD = new Double3(0, 0, 0);
-    public Double3 kS = new Double3(0, 0, 0);
-    public Double3 kT = new Double3(0, 0, 0);
-    public Double3 kR = new Double3(0, 0, 0);
+    public Double3 kD = Double3.ZERO;
+    public Double3 kS = Double3.ZERO;
+    public Double3 kT = Double3.ZERO;
+    public Double3 kR = Double3.ZERO;
     public int nShininess = 0;
 
     /**
@@ -65,49 +65,4 @@ public class Material {
         return this;
     }
 
-    /**
-     * getter for kD field
-     * 
-     * @return the constant of diffuse
-     */
-    public Double3 getKd() {
-        return kD;
-    }
-
-
-    /**
-     * getter for kS field
-     * 
-     * @return the constant of specular
-     */
-    public Double3 getKs() {
-        return kS;
-    }
-
-    /**
-     * getter for kT field
-     * 
-     * @return constant of transparency
-     */
-    public Double3 getKt() {
-        return kT;
-    }
-
-    /**
-     * getter for kR field
-     * 
-     * @return constant of reflection
-     */
-    public Double3 getKr() {
-        return kR;
-    }
-
-    /**
-     * getter for nShininess field
-     * 
-     * @return the shininess of the material
-     */
-    public int getnShininess() {
-        return nShininess;
-    }
 }

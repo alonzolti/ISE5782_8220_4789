@@ -1,12 +1,13 @@
 package lighting;
 
 import primitives.*;
+import static primitives.Util.*;
 
 /**
  * the class represent a spot light in the scene
  */
 public class SpotLight extends PointLight {
-    private Vector direction;
+    private final Vector direction;
 
     /**
      * constructor
@@ -22,6 +23,7 @@ public class SpotLight extends PointLight {
 
     @Override
     public Color getIntensity(Point p) {
-        return super.getIntensity(p).scale(Math.max(0d, direction.dotProduct(getL(p))));
+        double dl = alignZero(direction.dotProduct(getL(p)));
+        return dl <= 0 ? Color.BLACK : super.getIntensity(p).scale(dl);
     }
 }

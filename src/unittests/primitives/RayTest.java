@@ -60,7 +60,7 @@ public class RayTest {
 
         // ================ Boundary Value Tests =====================
         // TC11: t < 0 -> not possible
-        assertThrows(IllegalArgumentException.class, () -> ray.getPoint(-2), "t < 0 isn't working");
+        assertEquals(new Point(1, 1, -2), ray.getPoint(-2), "t < 0 isn't working");
 
         // TC12: t = 0 -> start of the ray
         assertEquals(new Point(1, 1, 0), ray.getPoint(0), "t = 0 isn't working");

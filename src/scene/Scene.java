@@ -2,6 +2,25 @@ package scene;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Entity;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import geometries.Geometries;
 import lighting.*;
@@ -72,13 +91,34 @@ public class Scene {
     }
 
     /**
-     * bonus - not finished yet
      * the function parse xml file into scene object
      * 
-     * @param path
-     * @return
+     * @param path of the xml files
+     * @return the object itself
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
      */
     public Scene setXml(String path) {
+
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = builderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Document document = builder.parse(
+                    new FileInputStream(path));
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        XPath xPath = XPathFactory.newInstance().newXPath();
 
         return this;
     }

@@ -5,7 +5,7 @@ import primitives.*;
  * abstract class that trace the ray from the camera into the scene
  */
 public abstract class RayTracerBase {
-    protected Scene scene;
+    protected final Scene scene;
 
     /**
      * constructor

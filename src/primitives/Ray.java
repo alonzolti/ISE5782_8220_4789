@@ -15,8 +15,8 @@ public class Ray {
     /**
      * constructor, normalizez the vector before saving it
      * 
-     * @param p0  point
-     * @param dir vector
+     * @param p0  pothe start of the rayint
+     * @param dir the direction of the ray
      */
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
@@ -60,12 +60,14 @@ public class Ray {
      * 
      * @param t the scalar
      * @return return point on the ray
-     * @throws IllegalArgumentException if t is negative
+     *         =
      */
     public Point getPoint(double t) {
-        if (t < 0)
-            throw new IllegalArgumentException("t cannot be negative");
-        return isZero(t) ? p0 : p0.add(dir.scale(t));
+        try {
+            return p0.add(dir.scale(t));
+        } catch (IllegalArgumentException ignore) {
+            return p0;
+        }
     }
 
     /**
@@ -87,17 +89,18 @@ public class Ray {
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
         GeoPoint closestPoint = null;
-        double distance;
-        if (geoPoints != null && !geoPoints.isEmpty()) {
-            distance = p0.distance(geoPoints.get(0).point);
-            closestPoint = geoPoints.get(0);
-            for (int i = 0; i < geoPoints.size(); i++) {
-                if (p0.distance(geoPoints.get(i).point) < distance) {
-                    closestPoint = geoPoints.get(i);
-                    distance = p0.distance(geoPoints.get(i).point);
-                }
+        double distance = Double.POSITIVE_INFINITY;
+        if (geoPoints == null || geoPoints.isEmpty())
+            return null;
+
+        for (var gp : geoPoints) {
+            double d = p0.distance(gp.point); 
+            if (d < distance) {
+                closestPoint = gp;
+                distance = d;
             }
         }
+
         return closestPoint;
     }
 
