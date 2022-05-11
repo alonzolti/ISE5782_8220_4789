@@ -81,7 +81,7 @@ public class Camera {
         if (isZero(cos0)) { // 90
             vTo = vUp.scale(sin0);
         } else if (isZero(sin0)) {
-            vTo = vUp.scale(cos0);// if angle is zero - mult by one(no change)...
+            vTo = vTo.scale(cos0);// if angle is zero - mult by one(no change)...
         }
         else {//rotate around the To vector using Rodrigues' rotation formula
             vTo = vTo.scale(cos0)
@@ -105,7 +105,7 @@ public class Camera {
         if (isZero(cos0)) { // 90
             vRight = vTo.scale(sin0);
         } else if (isZero(sin0)) {
-            vRight = vTo.scale(cos0);// if angle is zero - mult by one(no change)...
+            vRight = vRight.scale(cos0);// if angle is zero - mult by one(no change)...
         }
         else {//rotate around the To vector using Rodrigues' rotation formula
             vRight = vRight.scale(cos0)
@@ -129,7 +129,7 @@ public class Camera {
         if (isZero(cos0)) { // 90
             vUp = vRight.scale(sin0);
         } else if (isZero(sin0)) {
-            vUp = vRight.scale(cos0);// if angle is zero - mult by one(no change)...
+            vUp = vUp.scale(cos0);// if angle is zero - mult by one(no change)...
         }
         else {//rotate around the To vector using Rodrigues' rotation formula
             vUp = vUp.scale(cos0)
@@ -144,7 +144,7 @@ public class Camera {
      * @return
      */
     public Camera moveUpDown(double distance){
-        location = location.add(vUp.scale(distance))
+        location = location.add(vUp.scale(distance));
         return this;
     }
     /**
@@ -153,7 +153,7 @@ public class Camera {
      * @return
      */
     public Camera moveLeftRight(double distance){
-        location = location.add(vRight.scale(distance))
+        location = location.add(vRight.scale(distance));
         return this;
     }
     /**
@@ -162,7 +162,7 @@ public class Camera {
      * @return
      */
     public Camera moveTowards(double distance){
-        location = location.add(vTo.scale(distance))
+        location = location.add(vTo.scale(distance));
         return this;
     }
 
