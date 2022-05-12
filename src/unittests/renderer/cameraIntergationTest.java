@@ -18,8 +18,8 @@ public class cameraIntergationTest {
     /**
      * a method that help to count intersections from camera to bodies
      * 
-     * @param camera
-     * @param intersect
+     * @param camera    the camera of the scene
+     * @param intersect the intersectable object
      * @return count
      */
     private int findIntersection(Camera camera, Intersectable intersect) {

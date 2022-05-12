@@ -4,10 +4,25 @@ package primitives;
  * the class represent data about the material in the scene
  */
 public class Material {
+    /**
+     * constant of diffuse
+     */
     public Double3 kD = Double3.ZERO;
+    /**
+     * constant of specular
+     */
     public Double3 kS = Double3.ZERO;
+    /**
+     * constant of transperancy
+     */
     public Double3 kT = Double3.ZERO;
+    /**
+     * constant of reflection
+     */
     public Double3 kR = Double3.ZERO;
+    /**
+     * constant of shininess
+     */
     public int nShininess = 0;
 
     /**
@@ -22,6 +37,17 @@ public class Material {
     }
 
     /**
+     * setter for kD field
+     * 
+     * @param kD constant of diffuse
+     * @return the object itself
+     */
+    public Material setKd(double kD) {
+        this.kD = new Double3(kD);
+        return this;
+    }
+
+    /**
      * setter for kS field
      * 
      * @param kS constant of specular
@@ -29,6 +55,17 @@ public class Material {
      */
     public Material setKs(Double3 kS) {
         this.kS = kS;
+        return this;
+    }
+
+    /**
+     * setter for kS field
+     * 
+     * @param kS constant of specular
+     * @return the object itself
+     */
+    public Material setKs(double kS) {
+        this.kS = new Double3(kS);
         return this;
     }
 
@@ -55,6 +92,17 @@ public class Material {
     }
 
     /**
+     * setter for kR field
+     * 
+     * @param kR constant of reflection
+     * @return the object itself
+     */
+    public Material setKr(double kR) {
+        this.kR = new Double3(kR);
+        return this;
+    }
+
+    /**
      * setter for nShininess field
      * 
      * @param ns shininess
@@ -64,5 +112,4 @@ public class Material {
         this.nShininess = ns;
         return this;
     }
-
 }

@@ -262,12 +262,15 @@ public class Camera {
     public void printGrid(int interval, Color color) {
         if (imageWriter == null)
             throw new MissingResourceException("image writer field is null", "Camera", null);
-        for (int i = 0; i < imageWriter.getNx(); i += interval)
-            for (int j = 0; j < imageWriter.getNy(); ++j)
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+
+        for (int i = 0; i < nX; i += interval)
+            for (int j = 0; j < nY; ++j)
                 imageWriter.writePixel(i, j, color);
 
-        for (int i = 0; i < imageWriter.getNx(); ++i)
-            for (int j = 0; j < imageWriter.getNy(); j += interval)
+        for (int i = 0; i < nX; ++i)
+            for (int j = 0; j < nY; j += interval)
                 imageWriter.writePixel(i, j, color);
     }
 
@@ -284,11 +287,11 @@ public class Camera {
     /**
      * the fucntion return the color that the ray pointing at
      * 
-     * @param nX
-     * @param nY
-     * @param j
-     * @param i
-     * @return
+     * @param nX number of pixels in axis x
+     * @param nY number of pixels in axis y
+     * @param j  pixel in column j
+     * @param i  pixel in column i
+     * @return the color of the pixel
      */
     public Color castRay(int nX, int nY, int j, int i) {
         return rayTracer.traceRay(constructRay(nX, nY, j, i));

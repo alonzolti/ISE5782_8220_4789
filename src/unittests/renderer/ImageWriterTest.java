@@ -5,7 +5,13 @@ import org.junit.jupiter.api.Test;
 import renderer.*;
 import primitives.*;
 
+/**
+ * image writer tests
+ */
 public class ImageWriterTest {
+    /**
+     * test the image writer
+     */
     @Test
     void writeToImageTest() {
         int nX = 800;

@@ -8,14 +8,14 @@ import primitives.*;
 public class AmbientLight extends Light {
 
     /**
-     * constructor
+     * constructor, initialize the ligth with the given intensity
      * 
-     * @param Ia
-     * @param Ka
+     * @param iA intensity of the light
+     * @param kA color of the light
      */
-    public AmbientLight(Color Ia, Double3 Ka) {
+    public AmbientLight(Color iA, Double3 kA) {
         // Ip = Ka * Ia
-        super(Ia.scale(Ka));
+        super(iA.scale(kA));
     }
 
     /**

@@ -18,8 +18,8 @@ public interface LightSource {
     /**
      * getter for the direction of the light source
      * 
-     * @param p the point
-     * @return TODO
+     * @param p the point to get the direction
+     * @return vector from the light source to the point
      */
     public Vector getL(Point p);
 

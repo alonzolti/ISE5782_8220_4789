@@ -9,7 +9,7 @@ abstract class Light {
     protected final Color intensity;
 
     /**
-     * constructor
+     * constructor, initialize the light with the given intensity
      * 
      * @param intensity color of the light
      */
