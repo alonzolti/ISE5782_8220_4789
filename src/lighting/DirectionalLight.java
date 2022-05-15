@@ -6,6 +6,9 @@ import primitives.*;
  * the class represent a directional light source in the scene
  */
 public class DirectionalLight extends Light implements LightSource {
+    /**
+     * direction of the light
+     */
     private final Vector direction;
 
     /**

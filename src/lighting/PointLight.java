@@ -7,13 +7,21 @@ import primitives.*;
  * the class represent a point light in the scene
  */
 public class PointLight extends Light implements LightSource {
+    /**
+     * position of the light
+     */
     private final Point position;
+
+    /**
+     * factor of the attenuation
+     */
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
 
     /**
-     * constructor, initialize the light with the given intensity and the position of the light
+     * constructor, initialize the light with the given intensity and the position
+     * of the light
      * 
      * @param intensity intensity of the light
      * @param position  position of the light

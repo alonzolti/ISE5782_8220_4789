@@ -156,6 +156,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * check if the point g is unshaded
+     * 
      * @deprecated please use transparent(...) method instead of this one
      * @param g           the point
      * @param lightSource the light source
