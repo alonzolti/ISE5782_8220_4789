@@ -3,6 +3,8 @@ package geometries;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.experimental.max.MaxCore;
+
 import primitives.*;
 import static primitives.Util.*;
 
@@ -23,8 +25,8 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<GeoPoint> points = plane.findGeoIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> points = plane.findGeoIntersections(ray,maxDistance);
         if (points == null)
             return null;
 

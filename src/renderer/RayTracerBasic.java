@@ -77,7 +77,7 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(p.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) {
-                Double3 ktr = transparency(p, lightSource, l, n);
+                Double3 ktr = transparency(p, lightSource, l, n, lightSource.getDistance(p.point));
                 if (!(ktr.scale(k).lowerThan(MIN_CALC_COLOR_K))) {
                     Color iL = lightSource.getIntensity(p.point).scale(ktr);
                     color = color.add(iL.scale(calcDiffuse(material, nl)),
@@ -167,42 +167,34 @@ public class RayTracerBasic extends RayTracerBase {
      */
     @SuppressWarnings("unused")
     @Deprecated
-    private boolean unshaded(GeoPoint g, LightSource lightSource, Vector l, Vector n, double nv) {
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(g.point, l.scale(-1), n));
-        if (intersections == null)
-            return true;
-        double lightDistance = lightSource.getDistance(g.point);
-        for (GeoPoint gp : intersections) {
-            if (alignZero(gp.point.distance(g.point) - lightDistance) <= 0
-                    && gp.geometry.getMaterial().kT.equals(Double3.ZERO))
-                return false;
-        }
-        return true;
+    private boolean unshaded(GeoPoint g, LightSource lightSource, Vector l, Vector n, double nv, double distance) {
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(g.point, l.scale(-1), n),
+                distance);
+        return intersections == null;
     }
 
     /**
      * calculate the transparency of the point
      * 
-     * @param p     the point
-     * @param light the light source
-     * @param l     the light vector
-     * @param n     the normal to the point
-     * @param ray   the ray to the point
-     * @return
+     * @param p        the point
+     * @param light    the light source
+     * @param l        the light vector
+     * @param n        the normal to the point
+     * @param ray      the ray to the point
+     * @param distance the distance between the point and the light source
+     * @return the transparency of the point
      */
-    private Double3 transparency(GeoPoint p, LightSource light, Vector l, Vector n) {
+    private Double3 transparency(GeoPoint p, LightSource light, Vector l, Vector n, double distance) {
 
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(p.point, l.scale(-1), n));
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(p.point, l.scale(-1), n),distance);
         if (intersections == null)
             return new Double3(1, 1, 1);
-        double lightDistance = light.getDistance(p.point);
+
         Double3 ktr = new Double3(1, 1, 1);
         for (GeoPoint gp : intersections) {
-            if (alignZero((gp.point.distance(p.point)) - lightDistance) <= 0) {
-                ktr = ktr.scale(gp.geometry.getMaterial().kT);
-                if (ktr.equals(Double3.ZERO))
-                    return Double3.ZERO;
-            }
+            ktr = ktr.scale(gp.geometry.getMaterial().kT);
+            if (ktr.equals(Double3.ZERO))
+                return Double3.ZERO;
         }
         return ktr;
     }

@@ -33,7 +33,8 @@ public class ReflectionRefractionTests {
 
 		scene.geometries.add( //
 				new Sphere(new Point(0, 0, -50), 50d).setEmission(new Color(BLUE)) //
-						.setMaterial(new Material().setKd(new Double3(0.4)).setKs(new Double3(0.3)).setShininess(100).setKt(new Double3(0.3))),
+						.setMaterial(new Material().setKd(new Double3(0.4)).setKs(new Double3(0.3)).setShininess(100)
+								.setKt(new Double3(0.3))),
 				new Sphere(new Point(0, 0, -50), 25d).setEmission(new Color(RED)) //
 						.setMaterial(new Material().setKd(new Double3(0.5)).setKs(new Double3(0.5)).setShininess(100)));
 		scene.lights.add( //
@@ -58,7 +59,8 @@ public class ReflectionRefractionTests {
 
 		scene.geometries.add( //
 				new Sphere(new Point(-950, -900, -1000), 400d).setEmission(new Color(0, 0, 100)) //
-						.setMaterial(new Material().setKd(new Double3(0.25)).setKs(new Double3(0.25)).setShininess(20).setKt(new Double3(0.5))),
+						.setMaterial(new Material().setKd(new Double3(0.25)).setKs(new Double3(0.25)).setShininess(20)
+								.setKt(new Double3(0.5))),
 				new Sphere(new Point(-950, -900, -1000), 200d).setEmission(new Color(100, 20, 20)) //
 						.setMaterial(new Material().setKd(new Double3(0.25)).setKs(new Double3(0.25)).setShininess(20)),
 				new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500), new Point(670, 670, 3000)) //
@@ -96,12 +98,39 @@ public class ReflectionRefractionTests {
 				new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150)) //
 						.setMaterial(new Material().setKd(new Double3(0.5)).setKs(new Double3(0.5)).setShininess(60)), //
 				new Sphere(new Point(60, 50, -50), 30d).setEmission(new Color(BLUE)) //
-						.setMaterial(new Material().setKd(new Double3(0.2)).setKs(new Double3(0.2)).setShininess(30).setKt(new Double3(0.6))));
+						.setMaterial(new Material().setKd(new Double3(0.2)).setKs(new Double3(0.2)).setShininess(30)
+								.setKt(new Double3(0.6))));
 
 		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
 				.setKl(4E-5).setKq(2E-7));
 
 		ImageWriter imageWriter = new ImageWriter("refractionShadow", 600, 600);
+		camera.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene)) //
+				.renderImage() //
+				.writeToImage();
+	}
+
+	/**
+	 * produce a picture of a sphere inside a pyramid
+	 * unfinished
+	 */
+	@Test
+	public void targi7Test() {
+		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
+				.setVPSize(200d, 200d).setVPDistance(1000);
+		scene.setAmbientLight(new AmbientLight(new Color(GREEN),new Double3(0.15)));
+		scene.geometries.add(
+		/*	new Triangle(v1, v2, v3).setMaterial(),
+			new Triangle(, v2, v3),
+			new Triangle(v1, v2, v3),
+			new Triangle(v1, v2, v3),
+			new Sphere(center, radius)
+		*/);
+		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
+				.setKl(4E-5).setKq(2E-7));
+
+		ImageWriter imageWriter = new ImageWriter("targil7", 600, 600);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.renderImage() //

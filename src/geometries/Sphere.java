@@ -2,6 +2,7 @@ package geometries;
 
 import java.util.List;
 import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Sphere class represents sphere in space
@@ -47,7 +48,7 @@ public class Sphere extends Geometry {
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         // Ray -> P = P0 + t*v, t >0
         // Sphere points: |P-O|^2 - r^2 = 0
 
@@ -71,6 +72,11 @@ public class Sphere extends Geometry {
         GeoPoint p2 = new GeoPoint(this, ray.getPoint(t2));
 
         double t1 = Util.alignZero(tm - th);
+
+        if (alignZero(t1 - maxDistance) >= 0)
+            return null;
+        if (alignZero(t2 - maxDistance) >= 0)
+            return List.of(new GeoPoint(this, ray.getPoint(t1)));
         return t1 <= 0 ? List.of(p2) : List.of(new GeoPoint(this, ray.getPoint(t1)), p2);
 
     }

@@ -104,13 +104,14 @@ public class Double3 {
 	}
 
 	/**
-	 * Scale (multiply) floating point triad by a floating point triad into a new triad where each
+	 * Scale (multiply) floating point triad by a floating point triad into a new
+	 * triad where each
 	 * number is multiplied by the number
 	 * 
 	 * @param rhs right handle side operand for scaling
 	 * @return result of scale
 	 */
-	public Double3 scale(Double3 rhs){
+	public Double3 scale(Double3 rhs) {
 		return new Double3(d1 * rhs.d1, d2 * rhs.d2, d3 * rhs.d3);
 	}
 
@@ -135,9 +136,10 @@ public class Double3 {
 	public Double3 product(Double3 rhs) {
 		return new Double3(d1 * rhs.d1, d2 * rhs.d2, d3 * rhs.d3);
 	}
-	
+
 	/**
 	 * Checks whether all the numbers are lower than a test number
+	 * 
 	 * @param k the test number
 	 * @return true if all the numbers are less than k, false otherwise
 	 */
