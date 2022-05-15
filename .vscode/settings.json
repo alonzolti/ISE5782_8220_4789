@@ -1,0 +1,13 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
+
+    "cSpell.words": [],
+    "java.test.defaultConfig": "ourConfig",
+    "java.test.config": {
+        "name": "ourConfig",
+        "workingDirectory": "${workspaceFolder}"
+    }
+}
