@@ -113,22 +113,51 @@ public class ReflectionRefractionTests {
 
 	/**
 	 * produce a picture of a sphere inside a pyramid
-	 * unfinished
 	 */
 	@Test
 	public void targi7Test() {
-		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
+		Camera camera = new Camera(new Point(0, -950, 870), new Vector(0, 1, 1), new Vector(0, 1, -1)) //
 				.setVPSize(200d, 200d).setVPDistance(1000);
-		scene.setAmbientLight(new AmbientLight(new Color(GREEN),new Double3(0.15)));
-		scene.geometries.add(
-		/*	new Triangle(v1, v2, v3).setMaterial(),
-			new Triangle(, v2, v3),
-			new Triangle(v1, v2, v3),
-			new Triangle(v1, v2, v3),
-			new Sphere(center, radius)
-		*/);
-		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
-				.setKl(4E-5).setKq(2E-7));
+
+		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.pink), new Double3(0.15)));
+
+		scene.geometries.add( //
+				new Triangle(new Point(-150, -150, -115), new Point(150, -150, -135), new Point(75, 75, -150))
+						.setMaterial(new Material().setKs(new Double3(0.8)).setShininess(60)), //
+				new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150))
+						.setMaterial(new Material().setKs(new Double3(0.8)).setShininess(60)), //
+				new Sphere(new Point(0, 0, -120), 15d) //
+						.setEmission(new Color(ORANGE)) //
+						.setMaterial(new Material().setKd(new Double3(0.5)).setKs(new Double3(0.5)).setShininess(60)
+								.setKt(0.9).setKr(0)), //
+				new Sphere(new Point(0, 0, -120), 10d)
+						.setEmission(new Color(BLUE))
+						.setMaterial(new Material().setKd(0.1).setKs(0.1).setKr(1).setShininess(30)),
+
+				new Triangle(new Point(30, -30, -150), new Point(30, 30, -150), new Point(0, 0, 0))
+						.setEmission(new Color(RED))
+						.setMaterial(new Material().setKd(0.5).setKt(1)),
+
+				new Triangle(new Point(-30, -30, -150), new Point(30, -30, -150), new Point(0, 0, 0))
+						.setEmission(new Color(GREEN))
+						.setMaterial(new Material().setKd(0.1).setKt(0.6)),
+
+				new Triangle(new Point(-30, -30, -150), new Point(-30, 30, -150), new Point(0, 0, 0))
+						.setEmission(new Color(120, 120, 170))
+						.setMaterial(new Material().setKd(0.1).setKt(0.7)),
+
+				new Triangle(new Point(-30, 30, -150), new Point(30, 30, -150), new Point(0, 0, 0))
+						.setEmission(new Color(250, 120, 0))
+						.setMaterial(new Material().setShininess(30).setKd(0.4).setKr(0.7).setKs(0.3).setKt(0.1))
+
+		);
+		scene.lights.add( //
+				new SpotLight(new Color(700, 400, 400), new Point(-10, 80, -50), new Vector(1, 0, -1)) //
+						.setKl(4E-4).setKq(2E-5));
+
+		scene.lights.add(
+				new SpotLight(new Color(red), new Point(0, 0, -70), new Vector(0, 0, -1)).setKl(4E-4)
+						.setKq(2E-5));
 
 		ImageWriter imageWriter = new ImageWriter("targil7", 600, 600);
 		camera.setImageWriter(imageWriter) //
