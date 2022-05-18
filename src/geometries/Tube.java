@@ -48,10 +48,20 @@ public class Tube extends Geometry {
         return p.subtract(meetingpoint);
     }
 
-    //bonus
+    
+    
+    /** 
+     * return the intesection of ta ray and the tube
+     * @param ray
+     * @param maxDistance
+     * @return List<GeoPoint>
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        // TODO Auto-generated method stub
+        Point p0 = axisRay.getP0();
+        Point rayP = ray.getP0();
+        // TODO find intersect 
+        
         return null;
     }
 }
