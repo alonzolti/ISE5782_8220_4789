@@ -31,6 +31,11 @@ public class RayTracerBasic extends RayTracerBase {
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
+    @Override
+    public Color traceRay(List<Ray> ray) {
+        //TODO antialasing
+        return null;
+    }
     /**
      * calculate the color of the point
      * 

@@ -4,6 +4,7 @@ import primitives.*;
 
 import static primitives.Util.isZero;
 
+import java.util.List;
 import java.util.MissingResourceException;
 
 /**
@@ -19,6 +20,7 @@ public class Camera {
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    private boolean antialiasing = false;
 
     /**
      * getter for height
@@ -64,7 +66,14 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
-
+    /**
+     * to operate antialising
+     * @return this instance of camera
+     */
+    public Camera antiAliasing(){
+        antialiasing = true;
+        return this;
+    }
     /**
      * spinning the camera up and down, around the vRight vector
      * 
@@ -223,7 +232,7 @@ public class Camera {
     }
 
     /**
-     * the function gets a specific pixel, ans returns the ray that goes from camera
+     * the function gets a specific pixel, and returns the ray that goes from camera
      * throgh that pixel
      * as learned in the theorethic course
      * 
@@ -231,7 +240,7 @@ public class Camera {
      * @param nY number of pixels in axis y
      * @param j  pixel in column j
      * @param i  pixel in column i
-     * @return Ray ray the goes through the middle of the pixel
+     * @return Ray ray that goes through the middle of the pixel
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         // firstly - find the pixel center point
@@ -251,6 +260,34 @@ public class Camera {
             pIJ = pIJ.add(vUp.scale(yI));
         // 𝑹𝒂𝒚: {𝒑𝟎 = location, 𝒅𝒊𝒓𝒆𝒄𝒕𝒊𝒐𝒏 = pIJ - location}
         return new Ray(location, pIJ.subtract(location));
+    }
+    /**
+     * makes a grid of rays that go through the pixel
+     *       ------------------------------
+     *      |                               |
+     *      |  *            *           *   |
+     *      |                               |
+     *      |                               |
+     *      |                               |
+     *      |                               |
+     *      |  *            *           *   |
+     *      |                               |
+     *      |                               | 
+     *      |                               | 
+     *      |                               | 
+     *      |  *            *           *   |
+     *      |                               |
+     *       ------------------------------- 
+     * @param nX number of pixels in axis x
+     * @param nY number of pixels in axis y
+     * @param j  pixel in column j
+     * @param i  pixel in column i
+     * @return  rays that goes through the pixel in a grid
+     */
+    public List<Ray> antiAliasingConstructRay(int nX, int nY, int j, int i){
+        //TODO antialising
+        //spiral - tcosi + 10/isini. t = radius. 
+        return null;
     }
 
     /**
@@ -312,7 +349,8 @@ public class Camera {
      * @return the color of the pixel
      */
     public Color castRay(int nX, int nY, int j, int i) {
-        return rayTracer.traceRay(constructRay(nX, nY, j, i));
+        return antialiasing == false ? rayTracer.traceRay(constructRay(nX, nY, j, i)) :
+        rayTracer.traceRay(antiAliasingConstructRay(nX, nY, j, i)); // for anti-aliasing
     }
 
 }
