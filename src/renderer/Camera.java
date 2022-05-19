@@ -4,6 +4,7 @@ import primitives.*;
 
 import static primitives.Util.isZero;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -21,6 +22,7 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
     private boolean antialiasing = false;
+    private int raysNumber = 10;//numbers of rays
 
     /**
      * getter for height
@@ -70,7 +72,8 @@ public class Camera {
      * to operate antialising
      * @return this instance of camera
      */
-    public Camera antiAliasing(){
+    public Camera antiAliasing(int raysNumber){
+        this.raysNumber = raysNumber;
         antialiasing = true;
         return this;
     }
@@ -249,8 +252,8 @@ public class Camera {
         double rY = height / nY;
         double rX = width / nX;
         // pixel[i,j] center
-        double yI = -(i - (nY - 1) / 2d) * rY;
-        double xJ = (j - (nX - 1) / 2d) * rX;
+        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight vector
+        double xJ = (j - (nX - 1) / 2d) * rX; // the distance from the center to the middle of the pixel in vUp vector
         // Point pIJ = pc.add(vRight.scale(xJ)).add(vUp.scale(yI));
         // pIJ is the center that we need
         Point pIJ = pc;
@@ -265,18 +268,18 @@ public class Camera {
      * makes a grid of rays that go through the pixel
      *       ------------------------------
      *      |                               |
-     *      |  *            *           *   |
+     *      |               *               |
      *      |                               |
      *      |                               |
-     *      |                               |
-     *      |                               |
-     *      |  *            *           *   |
+     *      |               *               |
+     *      |                  *            |
+     *      |*         *    *         *     |
      *      |                               |
      *      |                               | 
+     *      |               *               | 
      *      |                               | 
-     *      |                               | 
-     *      |  *            *           *   |
      *      |                               |
+     *      |               *               |
      *       ------------------------------- 
      * @param nX number of pixels in axis x
      * @param nY number of pixels in axis y
@@ -285,9 +288,58 @@ public class Camera {
      * @return  rays that goes through the pixel in a grid
      */
     public List<Ray> antiAliasingConstructRay(int nX, int nY, int j, int i){
-        //TODO antialising
-        //spiral - tcosi + 10/isini. t = radius. 
-        return null;
+        
+        List<Ray> rays = new LinkedList<>();
+        //spiral - -0.5a^x.
+        /* 
+            x^2 +y^2 = r^2
+            y^2 = r^2 - x^2
+            xJ = change in vRight from the center
+            yI = change in vUp from the center
+            x = chnge in Vright from the center of the pixel - to the point
+            y = change in vUp from the center of the pixel to the point
+            r = chnges from 0 to the radius of the circle that traped in the pixel.
+            rMax = min(rY,rX)            
+            rY = height / nY;
+            rX = width / nX;
+            loop i = 0 to ray numbers
+                r = rMax / raysNumber * i
+                x = r*cos(a*pi / raysNumber * i) a / 2 is the number of spins
+                y = r*sin(a*pi / raysNumber * i)
+        */
+        double r,x,y;
+        // firstly - find the pixel center point
+        Point pc = location.add(vTo.scale(distance)); // image center
+        // ratio(pixel width and height)
+        double rY = height / nY;
+        double rX = width / nX;
+        // pixel[i,j] center
+        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight vector
+        double xJ = (j - (nX - 1) / 2d) * rX; // the distance from the center to the middle of the pixel in vUp vector
+        // Point pIJ = pc.add(vRight.scale(xJ)).add(vUp.scale(yI));
+        // pIJ is the center that we need
+        Point pIJ = pc;
+        if (xJ != 0)
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0)
+            pIJ = pIJ.add(vUp.scale(yI)); //pIJ is the pixel center
+        double rMax = Math.min(rY,rX);//the maximum radius
+        double rSegment = rMax / raysNumber;
+        int spins = 2;
+        double angle = (Math.PI*spins) / raysNumber;
+        Point pXY;
+        for (int k = 0; k < raysNumber; k++) {
+            pXY = pIJ;
+            r = rSegment * k;
+            x = Math.cos(angle * i)*r;
+            y = Math.sin(angle * i)*r;
+            if (x != 0)
+                pXY = pXY.add(vRight.scale(x));
+            if (yI != 0)
+                pXY = pXY.add(vUp.scale(y));
+            rays.add(new Ray(location, pXY.subtract(location)));
+        }
+        return rays;
     }
 
     /**

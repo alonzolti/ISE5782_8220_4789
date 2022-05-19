@@ -47,6 +47,36 @@ public class RenderTests {
 		camera.writeToImage();
 	}
 
+	/**
+	 * Produce a scene with basic 3D model and render it into a png image with a
+	 * grid
+	 */
+	@Test
+	public void basicRenderTwoColorAntiAliasingTest() {
+		Scene scene = new Scene("Test scene")//
+				.setAmbientLight(new AmbientLight(new Color(255, 191, 191), //
+						new Double3(1, 1, 1))) //
+				.setBackground(new Color(75, 127, 90));
+
+		scene.geometries.add(new Sphere(new Point(0, 0, -100), 50d),
+				new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)), // up
+																												// left
+				new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100)), // down
+																												// left
+				new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))); // down
+																												// right
+		Camera camera = new Camera(Point.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
+				.setVPDistance(100) //
+				.setVPSize(500d, 500d) //
+				.setImageWriter(new ImageWriter("base render AntiAliasing test", 1000, 1000))
+				.setRayTracer(new RayTracerBasic(scene))
+				.antiAliasing(20);
+
+		camera.renderImage();
+		camera.printGrid(100, new Color(YELLOW));
+		camera.writeToImage();
+	}
+
 	// for stage 4.
 	/**
 	 * test for spinnig the camera, the spin function is in camera and not in
