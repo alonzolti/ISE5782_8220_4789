@@ -81,6 +81,16 @@ public class Material {
     }
 
     /**
+     * setter for kT field
+     * @param kT constant of transparency
+     * @return the object itself
+     */
+    public Material setKt(double kT){
+        this.kT = new Double3(kT);
+        return this;
+    }
+
+    /**
      * setter for kR field
      * 
      * @param kR constant of reflection
