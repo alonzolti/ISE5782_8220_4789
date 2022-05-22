@@ -2,7 +2,7 @@ package renderer;
 
 import primitives.*;
 
-import static primitives.Util.isZero;
+import static primitives.Util.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,8 +21,7 @@ public class Camera {
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private boolean antialiasing = false;
-    private int raysNumber = 10;//numbers of rays
+    private int raysNumber = 1;//numbers of rays
 
     /**
      * getter for height
@@ -74,7 +73,6 @@ public class Camera {
      */
     public Camera antiAliasing(int raysNumber){
         this.raysNumber = raysNumber;
-        antialiasing = true;
         return this;
     }
     /**
@@ -266,21 +264,6 @@ public class Camera {
     }
     /**
      * makes a grid of rays that go through the pixel
-     *       ------------------------------
-     *      |                               |
-     *      |               *               |
-     *      |                               |
-     *      |                               |
-     *      |               *               |
-     *      |                  *            |
-     *      |*         *    *         *     |
-     *      |                               |
-     *      |                               | 
-     *      |               *               | 
-     *      |                               | 
-     *      |                               |
-     *      |               *               |
-     *       ------------------------------- 
      * @param nX number of pixels in axis x
      * @param nY number of pixels in axis y
      * @param j  pixel in column j
@@ -325,17 +308,17 @@ public class Camera {
             pIJ = pIJ.add(vUp.scale(yI)); //pIJ is the pixel center
         double rMax = Math.min(rY,rX);//the maximum radius
         double rSegment = rMax / raysNumber;
-        int spins = 2;
-        double angle = (Math.PI*spins) / raysNumber;
+        double spins = 4*Math.PI;//2 spins
+        double angle = (spins) / raysNumber;
         Point pXY;
         for (int k = 0; k < raysNumber; k++) {
             pXY = pIJ;
             r = rSegment * k;
-            x = Math.cos(angle * i)*r;
-            y = Math.sin(angle * i)*r;
-            if (x != 0)
+            x = alignZero(Math.cos(angle * k)*r);
+            y = alignZero(Math.sin(angle * k)*r);
+            if (!isZero(x))
                 pXY = pXY.add(vRight.scale(x));
-            if (yI != 0)
+            if (!isZero(y))
                 pXY = pXY.add(vUp.scale(y));
             rays.add(new Ray(location, pXY.subtract(location)));
         }
@@ -401,8 +384,13 @@ public class Camera {
      * @return the color of the pixel
      */
     public Color castRay(int nX, int nY, int j, int i) {
-        return antialiasing == false ? rayTracer.traceRay(constructRay(nX, nY, j, i)) :
-        rayTracer.traceRay(antiAliasingConstructRay(nX, nY, j, i)); // for anti-aliasing
+        //antialasing
+        List<Ray> rays = antiAliasingConstructRay(nX, nY, j, i);
+        Color color = rayTracer.traceRay(rays.get(0)).reduce(rays.size());
+        for (int k = 1; k < rays.size(); k++) {
+            color.add(rayTracer.traceRay(rays.get(k)).reduce(rays.size()));
+        }
+        return color;
     }
 
 }
