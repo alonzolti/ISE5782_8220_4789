@@ -112,6 +112,7 @@ public class ShadowTests {
 						.setKl(4E-4).setKq(2E-5));
 
 		camera.setImageWriter(new ImageWriter("shadowTrianglesSphere", 600, 600)) //
+				.antiAliasing(20)
 				.renderImage() //
 				.writeToImage();
 	}
