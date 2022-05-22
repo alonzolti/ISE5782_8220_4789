@@ -1,9 +1,7 @@
 package renderer;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.platform.console.shadow.picocli.CommandLine.Range;
 
 import geometries.Intersectable.GeoPoint;
 import primitives.*;
@@ -35,15 +33,6 @@ public class RayTracerBasic extends RayTracerBase {
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
-    @Override
-    public Color traceRay(List<Ray> rays) {
-        //antialasing
-        Color color = traceRay(rays.get(0)).reduce(rays.size());
-        for (int i = 1; i < rays.size(); i++) {
-            color.add(traceRay(rays.get(i)).reduce(rays.size()));
-        }
-        return color;
-    }
     /** 
      * calculate the color of the point
      * 
