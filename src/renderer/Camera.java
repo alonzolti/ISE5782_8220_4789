@@ -386,10 +386,10 @@ public class Camera {
     public Color castRay(int nX, int nY, int j, int i) {
         //antialasing
         List<Ray> rays = antiAliasingConstructRay(nX, nY, j, i);
-        Color color = rayTracer.traceRay(rays.get(0)).reduce(rays.size());
-        for (int k = 1; k < rays.size(); k++) {
-            color.add(rayTracer.traceRay(rays.get(k)).reduce(rays.size()));
-        }
+        Color color = Color.BLACK;
+        for (int k = 0; k < rays.size(); k++)
+            color.add(rayTracer.traceRay(rays.get(k)));
+        color.reduce(rays.size());
         return color;
     }
 
