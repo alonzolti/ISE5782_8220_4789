@@ -68,7 +68,8 @@ public class Camera {
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
     /**
-     * to operate antialising
+     * to operate antialising, the number will be the number of columns and rows
+     * in the grid
      * @return this instance of camera
      */
     public Camera antiAliasing(int raysNumber){
@@ -271,26 +272,7 @@ public class Camera {
      * @return  rays that goes through the pixel in a grid
      */
     public List<Ray> antiAliasingConstructRay(int nX, int nY, int j, int i){
-        
         List<Ray> rays = new LinkedList<>();
-        //spiral - -0.5a^x.
-        /* 
-            x^2 +y^2 = r^2
-            y^2 = r^2 - x^2
-            xJ = change in vRight from the center
-            yI = change in vUp from the center
-            x = chnge in Vright from the center of the pixel - to the point
-            y = change in vUp from the center of the pixel to the point
-            r = chnges from 0 to the radius of the circle that traped in the pixel.
-            rMax = min(rY,rX)            
-            rY = height / nY;
-            rX = width / nX;
-            loop i = 0 to ray numbers
-                r = rMax / raysNumber * i
-                x = r*cos(a*pi / raysNumber * i) a / 2 is the number of spins
-                y = r*sin(a*pi / raysNumber * i)
-        */
-        double r,x,y;
         // firstly - find the pixel center point
         Point pc = location.add(vTo.scale(distance)); // image center
         // ratio(pixel width and height)
@@ -306,21 +288,24 @@ public class Camera {
             pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0)
             pIJ = pIJ.add(vUp.scale(yI)); //pIJ is the pixel center
-        double rMax = Math.min(rY,rX);//the maximum radius
-        double rSegment = rMax / raysNumber;
-        double spins = 4*Math.PI;//2 spins
-        double angle = (spins) / raysNumber;
-        Point pXY;
-        for (int k = 0; k < raysNumber; k++) {
-            pXY = pIJ;
-            r = rSegment * k;
-            x = alignZero(Math.cos(angle * k)*r);
-            y = alignZero(Math.sin(angle * k)*r);
-            if (!isZero(x))
-                pXY = pXY.add(vRight.scale(x));
-            if (!isZero(y))
-                pXY = pXY.add(vUp.scale(y));
-            rays.add(new Ray(location, pXY.subtract(location)));
+        // divide the pixel into segments andfind the middle for every segment
+        //ratio segment width and lentgh
+        double sRY = rY/raysNumber;
+        double sRX = rX/raysNumber;
+        //segment[i,j] center
+        double sYI,sXJ;
+        Point sPIJ;
+        for (int si = 0; si < raysNumber; si++) {
+            for (int sj = 0; sj < raysNumber; sj++) {
+                sPIJ = pIJ;
+                sYI = -(si - (raysNumber - 1) / 2d) * sRY;
+                sXJ = (sj - (raysNumber - 1) / 2d) * sRX;
+                if (!isZero(sXJ))
+                    sPIJ = sPIJ.add(vRight.scale(sXJ));
+                if (!isZero(sYI))
+                    sPIJ = sPIJ.add(vUp.scale(sYI)); //sPIJ is the segment center
+                rays.add(new Ray(location, sPIJ.subtract(location)));
+            }
         }
         return rays;
     }

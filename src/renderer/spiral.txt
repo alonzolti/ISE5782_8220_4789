@@ -1,0 +1,66 @@
+    /**
+     * makes a spiral of rays that go through the pixel
+     * @auther alon zolti ziegler21
+     * @param nX number of pixels in axis x
+     * @param nY number of pixels in axis y
+     * @param j  pixel in column j
+     * @param i  pixel in column i
+     * @return  rays that goes through the pixel in a grid
+     */    
+    public List<Ray> antiAliasingConstructRay(int nX, int nY, int j, int i){ //spiral
+        
+        List<Ray> rays = new LinkedList<>();
+        //spiral - -0.5a^x.
+        /* 
+            x^2 +y^2 = r^2
+            y^2 = r^2 - x^2
+            xJ = change in vRight from the center
+            yI = change in vUp from the center
+            x = chnge in Vright from the center of the pixel - to the point
+            y = change in vUp from the center of the pixel to the point
+            r = chnges from 0 to the radius of the circle that traped in the pixel.
+                        
+            rYSegment = rX / raysNumber;
+            rXSegment = rY / raysNumber;
+            loop i = 0 to ray numbers
+                rX = rXSegment / raysNumber * i
+                rY = rYSegment / raysNumber * i
+                x = rX*cos(a*pi / raysNumber * i) a / 2 is the number of spins
+                y = rY*sin(a*pi / raysNumber * i)
+        */
+        double x,y;
+        // firstly - find the pixel center point
+        Point pc = location.add(vTo.scale(distance)); // image center
+        // ratio(pixel width and height)
+        double rY = height / nY;
+        double rX = width / nX;
+        // pixel[i,j] center
+        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight vector
+        double xJ = (j - (nX - 1) / 2d) * rX; // the distance from the center to the middle of the pixel in vUp vector
+        // Point pIJ = pc.add(vRight.scale(xJ)).add(vUp.scale(yI));
+        // pIJ is the center that we need
+        Point pIJ = pc;
+        if (xJ != 0)
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0)
+            pIJ = pIJ.add(vUp.scale(yI)); //pIJ is the pixel center
+        double rMax = Math.min(rY,rX);//the maximum radius
+        double rXSegment = rMax / raysNumber;
+        double rYSegment = rMax / raysNumber;
+        double spins = 4*Math.PI;//2 spins
+        double angle = (spins) / raysNumber;
+        Point pXY;
+        for (int k = 0; k < raysNumber; k++) {
+            pXY = pIJ;
+            rX = rXSegment * k;
+            rY = rYSegment * k;
+            x = alignZero(Math.cos(angle * k)*rX);
+            y = alignZero(Math.sin(angle * k)*rY);
+            if (!isZero(x))
+                pXY = pXY.add(vRight.scale(x));
+            if (!isZero(y))
+                pXY = pXY.add(vUp.scale(y));
+            rays.add(new Ray(location, pXY.subtract(location)));
+        }
+        return rays;
+    }

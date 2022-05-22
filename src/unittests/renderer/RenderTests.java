@@ -70,7 +70,7 @@ public class RenderTests {
 				.setVPSize(500d, 500d) //
 				.setImageWriter(new ImageWriter("base render AntiAliasing test", 1000, 1000))
 				.setRayTracer(new RayTracerBasic(scene))
-				.antiAliasing(20);
+				.antiAliasing(5);
 
 		camera.renderImage();
 		camera.printGrid(100, new Color(YELLOW));
