@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
@@ -60,8 +61,18 @@ public class Cylinder extends Tube {
     // bonus
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        // TODO Auto-generated method stub
-        return super.findGeoIntersectionsHelper(ray, maxDistance);
+        List<GeoPoint> res = new ArrayList<>();
+        List<GeoPoint> lst = super.findGeoIntersectionsHelper(ray, maxDistance);
+        if (lst != null)
+            for (GeoPoint geoPoint : lst) {
+                double distance = alignZero(geoPoint.point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir()));
+                if (distance > 0 && distance <= height)
+                    res.add(geoPoint);
+            }
+
+        if (res.size() == 0)
+            return null;
+        return res;
     }
 
 }
