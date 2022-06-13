@@ -76,7 +76,6 @@ public class RenderTests {
 		camera.printGrid(100, new Color(YELLOW));
 		camera.writeToImage();
 	}
-
 	// for stage 4.
 	/**
 	 * test for spinnig the camera, the spin function is in camera and not in
