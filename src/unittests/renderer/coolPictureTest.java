@@ -100,12 +100,13 @@ public class coolPictureTest {
             );  
         
     }
-    private void addHills(Scene scene,int y){
+    private void addHills(Scene scene,int y,int range){
         Random random = new Random();
         double rand;
-        for(int i = -8; i < 9; i++){
+        float distance = 8/range * 800;
+        for(int i = -range; i < range; i++){
             rand = random.nextDouble();
-            scene.geometries.add(new Sphere(new Point(800*i * rand*200 - 100, y - rand*200 - 100, -500 + rand*100 - 50),1000 + rand*100 - 50).setEmission(new Color(0,190,0)).setMaterial(new Material().setShininess(3).setKd(0.5).setKs(0.5)));
+            scene.geometries.add(new Sphere(new Point(distance*i * rand*distance/4 - distance/8, y - rand*distance/4 - distance/8, -500 + rand*100 - 50),1000 + rand*100 - 50).setEmission(new Color(0,190,0)).setMaterial(new Material().setShininess(13).setKd(0.4).setKs(0.4)));
         }
     }
     @Test
@@ -117,23 +118,23 @@ public class coolPictureTest {
         addRocket(scene, new Point(2500,2500,1000), 400, new Vector(0, b, b), new Vector(-2/b, 1/b, -1/b), new Color(192, 50, 50));//vZ = (-1,-1,1) : vX = (0,b,b) vY = (-2/b,1/b,-1/b)
         addRocket(scene, new Point(-2500, -2500, 1000), 400, new Vector(0,b,-b), new Vector(-2/b, 1/b, 1/b), new Color(50, 192, 50)); //vZ = (1,1,1) : vX = (0,b,-b) vY = (-2/b,1/b,1/b)
         addRocket(scene, new Point(2500, -2500, 1000), 400, new Vector(0, b, -b), new Vector(-2/b, -1/b, -1/b), new Color(50, 50, 192));// vz = (-1,1,1) : vx = (0,b,-b) vy = (-2/b,-1/b,-1/b)
-        addRocket(scene, new Point(-2500, 2500, 1000), 400, new Vector(0, b, b), new Vector(-2/b, -1/b, 1/b), new Color(192, 192, 50));//vz = (1,-1,1) : vx = (0,b,b) vy = (-2/b,-1/b,1/b)
-        addRocket(scene, new Point(0, 0, 800), 250, new Vector(1.29,3.75,0), new Vector(-3.783,1.301352,0), new Color(192,192,192));//vz = (0,0,1) : vx = (1.29,3.75,0) vy = (-3.783,1.301352,0)
+//        addRocket(scene, new Point(-2500, 2500, 1000), 400, new Vector(0, b, b), new Vector(-2/b, -1/b, 1/b), new Color(192, 192, 50));//vz = (1,-1,1) : vx = (0,b,b) vy = (-2/b,-1/b,1/b)
+//        addRocket(scene, new Point(0, 0, 800), 250, new Vector(1.29,3.75,0), new Vector(-3.783,1.301352,0), new Color(192,192,192));//vz = (0,0,1) : vx = (1.29,3.75,0) vy = (-3.783,1.301352,0)
         addClouds(scene, new Point(-3000, 1000, 1850), 300);
         addClouds(scene, new Point(1000, -2500, 850), 300);
-        addClouds(scene, new Point(1750, 3860, 2600), 300);
-        addClouds(scene, new Point(-750, -1170, 1000), 300);
-        for (int i = -8; i < 9; i++) {
-            addHills(scene, i * 800);
+//        addClouds(scene, new Point(1750, 3860, 2600), 300);
+//        addClouds(scene, new Point(-750, -1170, 1000), 300);
+        for (int i = -6; i < 7; i++) {
+            addHills(scene, i * 800, 6);
         }
         scene.geometries.add(
 //ground
-            new Plane(new Point(0,0,-300),new Vector(0,0,1)).setEmission(new Color(0,190,0)).setMaterial(new Material().setShininess(3).setKd(0.5).setKs(0.5)),
+            //new Plane(new Point(0,0,-300),new Vector(0,0,1)).setEmission(new Color(0,190,0)).setMaterial(new Material().setShininess(3)),
 //sun
             new Sphere(new Point(5000,1800,4500),1500).setEmission(new Color(255,255,0)).setMaterial(new Material().setKt(1))
 
             );
-        scene.lights.add(new PointLight(new Color(100,100,100), new Point(-15000,0,1000)).setKc(0.7).setKl(0.7).setKq(0.7));
+//        scene.lights.add(new PointLight(new Color(100,100,100), new Point(-15000,0,1000)).setKc(0.7).setKl(0.7).setKq(0.7));
         scene.lights.add(new DirectionalLight(new Color(100,100,100), new Vector(-5, -1.8, -5)));
         Camera camera =  new Camera(new Point(-15000, 0, 1000),new Vector(0.03, 0, 1),new Vector(1, 0, -0.03))
         //Camera camera =  new Camera(new Point(-5000, -10000, 200),new Vector(0, 0, 1),new Vector(1, 2, 0))
@@ -141,8 +142,8 @@ public class coolPictureTest {
         .setVPSize(50d, 50d).setVPDistance(100) //maybe need to be changed
 //        .antiAliasing(5)
             .setImageWriter(new ImageWriter("rocket test", 1000, 1000))
-            .setRayTracer(new RayTracerBasic(scene))
-            .antiAliasing(8);
+            .setRayTracer(new RayTracerBasic(scene));
+//            .antiAliasing(8);
         camera.renderImage().writeToImage();
 
     }

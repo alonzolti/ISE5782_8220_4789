@@ -7,6 +7,7 @@ import static primitives.Util.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
+import java.util.stream.*;
 
 /**
  * class Camera represent a camera view
@@ -322,9 +323,17 @@ public class Camera {
             throw new MissingResourceException("some of the fields are null", "Camera", null);
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; ++i)
-            for (int j = 0; j < nY; ++j)
+        Pixel.initialize(nY, nX, 400);
+        IntStream.range(0, nY).parallel().forEach(i -> {
+            IntStream.range(0, nX).parallel().forEach(j -> {
                 imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
+                Pixel.pixelDone();
+                Pixel.printPixel();
+                });
+        });
+//        for (int i = 0; i < nX; ++i)
+//            for (int j = 0; j < nY; ++j)
+//                imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
         return this;
     }
 
