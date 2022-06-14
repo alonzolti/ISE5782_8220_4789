@@ -55,9 +55,10 @@ public class Double3 {
 			return true;
 		if (obj == null)
 			return false;
-		if (obj instanceof Double3 other)
-			return isZero(d1 - other.d1) && isZero(d2 - other.d2) && isZero(d3 - other.d3);
-		return false;
+		if (!(obj instanceof Double3))
+			return false;
+		Double3 other = (Double3) obj;
+		return isZero(d1 - other.d1) && isZero(d2 - other.d2) && isZero(d3 - other.d3);
 	}
 
 	@Override
