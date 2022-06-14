@@ -360,17 +360,17 @@ public class Camera {
             throw new MissingResourceException("some of the fields are null", "Camera", null);
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        Pixel.initialize(nY, nX, 400);
+        Pixel.initialize(nY, nX, 1000);
         IntStream.range(0, nY).parallel().forEach(i -> {
             IntStream.range(0, nX).parallel().forEach(j -> {
                 imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
                 Pixel.pixelDone();
                 Pixel.printPixel();
-                });
+            });
         });
-//        for (int i = 0; i < nX; ++i)
-//            for (int j = 0; j < nY; ++j)
-//                imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
+        // for (int i = 0; i < nX; ++i)
+        // for (int j = 0; j < nY; ++j)
+        // imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
         return this;
     }
 
@@ -430,7 +430,6 @@ public class Camera {
         }
     }
 
-    HashMap<Point, Color> colors = new HashMap<Point, Color>();
 
     /**
      * the function return the color of the point p on the view plane in the
@@ -439,7 +438,7 @@ public class Camera {
      * @param p the point
      * @return return the color
      */
-    private Color getColor(Point p) {
+    private Color getColor(Point p,HashMap<Point,Color>colors) {
         if (!colors.containsKey(p))// the color hasn't been calculated before
         {
             Color newColor = rayTracer.traceRay(new Ray(location, p.subtract(location)));
@@ -462,7 +461,7 @@ public class Camera {
      */
 
     private Color adaptiveSuperSamplingHelp(int nX, int nY, int j, int i) {
-        colors.clear();
+        HashMap<Point, Color> colors = new HashMap<Point, Color>();
         Point pc = location.add(vTo.scale(distance));
         double rY = height / nY;
         double rX = width / nX;
@@ -479,7 +478,7 @@ public class Camera {
         Point ru = pIJ.add(vRight.scale(rX / 2)).add(vUp.scale(rY / 2));
         Point rd = pIJ.add(vRight.scale(rX / 2)).add(vUp.scale(-rY / 2));
 
-        return adaptiveSuperSampling(pIJ, rX, rY, adaptiveSuperSamplingDepth, lu, ld, ru, rd);
+        return adaptiveSuperSampling(pIJ, rX, rY, adaptiveSuperSamplingDepth, lu, ld, ru, rd,colors);
     }
 
     /**
@@ -497,15 +496,15 @@ public class Camera {
      * @return color of the square
      */
     private Color adaptiveSuperSampling(Point pIJ, double rX, double rY, int depth, Point lu, Point ld, Point rd,
-            Point ru) {
+            Point ru,HashMap<Point,Color>colors) {
 
         if (depth <= 0) {
-            return Color.BLACK.add(getColor(lu), getColor(ld), getColor(rd), getColor(ru)).reduce(4);
+            return Color.BLACK.add(getColor(lu,colors), getColor(ld,colors), getColor(rd,colors), getColor(ru,colors)).reduce(4);
         }
-        Color luColor = getColor(lu);
-        Color ldColor = getColor(ld);
-        Color rdColor = getColor(rd);
-        Color ruColor = getColor(ru);
+        Color luColor = getColor(lu,colors);
+        Color ldColor = getColor(ld,colors);
+        Color rdColor = getColor(rd,colors);
+        Color ruColor = getColor(ru,colors);
 
         // if the corners equals
         if (luColor.equals(ldColor) && rdColor.equals(ruColor) && luColor.equals(rdColor))
@@ -519,13 +518,13 @@ public class Camera {
 
         return Color.BLACK.add(
                 adaptiveSuperSampling(pIJ.add(vRight.scale(-rX / 4)).add(vUp.scale(rY / 4)), rX / 2,
-                        rY / 2, depth - 1, lu, l, pIJ, u),
+                        rY / 2, depth - 1, lu, l, pIJ, u,colors),
                 adaptiveSuperSampling(pIJ.add(vRight.scale(-rX / 4)).add(vUp.scale(-rY / 4)), rX / 2,
-                        rY / 2, depth - 1, l, ld, d, pIJ),
+                        rY / 2, depth - 1, l, ld, d, pIJ,colors),
                 adaptiveSuperSampling(pIJ.add(vRight.scale(rX / 4)).add(vUp.scale(-rY / 4)), rX / 2,
-                        rY / 2, depth - 1, pIJ, d, rd, r),
+                        rY / 2, depth - 1, pIJ, d, rd, r,colors),
                 adaptiveSuperSampling(pIJ.add(vRight.scale(rX / 4)).add(vUp.scale(rY / 4)), rX / 2,
-                        rY / 2, depth - 1, u, pIJ, r, ru))
+                        rY / 2, depth - 1, u, pIJ, r, ru,colors))
                 .reduce(4);
 
     }
