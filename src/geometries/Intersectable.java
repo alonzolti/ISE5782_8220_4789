@@ -1,6 +1,8 @@
 package geometries;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import primitives.*;
 
 /**
@@ -30,8 +32,9 @@ public abstract class Intersectable {
         public boolean equals(Object obj) {
             if (this == obj)
                 return true;
-            if (obj == null || !(obj instanceof GeoPoint other))
+            if (obj == null || !(obj instanceof GeoPoint))
                 return false;
+            GeoPoint other = (GeoPoint)obj;
             return this.geometry.equals(other.geometry) && this.point.equals(other.point);
         }
 
@@ -49,7 +52,7 @@ public abstract class Intersectable {
      */
     public List<Point> findIntersections(Ray ray) {
         var geoList = findGeoIntersections(ray);
-        return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
+        return geoList == null ? null : geoList.stream().map(gp -> gp.point).collect(Collectors.toList());
     }
 
     /**

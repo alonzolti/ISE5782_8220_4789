@@ -4,9 +4,12 @@ import primitives.*;
 
 import static primitives.Util.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
+
+import javax.lang.model.util.ElementScanner6;
 
 /**
  * class Camera represent a camera view
@@ -21,7 +24,9 @@ public class Camera {
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private int raysNumber = 1;//numbers of rays
+    private int raysNumber = 1;// numbers of rays
+    private boolean adaptiveSuperampling = false;
+    private int adaptiveSuperSamplingDepth = 3;
 
     /**
      * getter for height
@@ -67,15 +72,18 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
+
     /**
      * to operate antialising, the number will be the number of columns and rows
      * in the grid
+     * 
      * @return this instance of camera
      */
-    public Camera antiAliasing(int raysNumber){
+    public Camera antiAliasing(int raysNumber) {
         this.raysNumber = raysNumber;
         return this;
     }
+
     /**
      * spinning the camera up and down, around the vRight vector
      * 
@@ -159,6 +167,7 @@ public class Camera {
 
     /**
      * moving the camera up
+     * 
      * @param the units to move
      * @return this instance of camera
      */
@@ -169,21 +178,23 @@ public class Camera {
 
     /**
      * moving the camera right
+     * 
      * @param the units to move
      * @return this instance of camera
      */
     public Camera moveLeftRight(double distance) {
-        location =  distance == 0 ? location : location.add(vRight.scale(distance));
+        location = distance == 0 ? location : location.add(vRight.scale(distance));
         return this;
     }
 
     /**
      * moving the camera forward
+     * 
      * @param the units to move
      * @return this instance of camera
      */
     public Camera moveTowards(double distance) {
-        location =  distance == 0 ? location : location.add(vTo.scale(distance));
+        location = distance == 0 ? location : location.add(vTo.scale(distance));
         return this;
     }
 
@@ -234,6 +245,28 @@ public class Camera {
     }
 
     /**
+     * setter for adaptiveSupersampling field
+     * 
+     * @param adaptive if the user wan't to use adaptive supersampling or not
+     * @return the object itself
+     */
+    public Camera setAdaptiveSupersampling(boolean adaptive) {
+        adaptiveSuperampling = adaptive;
+        return this;
+    }
+
+    /**
+     * setter for adaptiveSuperSamplingDepth field
+     * 
+     * @param depth depth of the algorithm
+     * @return the object itself
+     */
+    public Camera setAdaptiveSuperSamplingDepth(int depth) {
+        adaptiveSuperSamplingDepth = depth;
+        return this;
+    }
+
+    /**
      * the function gets a specific pixel, and returns the ray that goes from camera
      * throgh that pixel
      * as learned in the theorethic course
@@ -251,7 +284,8 @@ public class Camera {
         double rY = height / nY;
         double rX = width / nX;
         // pixel[i,j] center
-        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight vector
+        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight
+                                               // vector
         double xJ = (j - (nX - 1) / 2d) * rX; // the distance from the center to the middle of the pixel in vUp vector
         // Point pIJ = pc.add(vRight.scale(xJ)).add(vUp.scale(yI));
         // pIJ is the center that we need
@@ -263,15 +297,17 @@ public class Camera {
         // 𝑹𝒂𝒚: {𝒑𝟎 = location, 𝒅𝒊𝒓𝒆𝒄𝒕𝒊𝒐𝒏 = pIJ - location}
         return new Ray(location, pIJ.subtract(location));
     }
+
     /**
      * makes a grid of rays that go through the pixel
+     * 
      * @param nX number of pixels in axis x
      * @param nY number of pixels in axis y
      * @param j  pixel in column j
      * @param i  pixel in column i
-     * @return  rays that goes through the pixel in a grid
+     * @return rays that goes through the pixel in a grid
      */
-    public List<Ray> antiAliasingConstructRay(int nX, int nY, int j, int i){
+    public List<Ray> constructRays(int nX, int nY, int j, int i) {
         List<Ray> rays = new LinkedList<>();
         // firstly - find the pixel center point
         Point pc = location.add(vTo.scale(distance)); // image center
@@ -279,7 +315,8 @@ public class Camera {
         double rY = height / nY;
         double rX = width / nX;
         // pixel[i,j] center
-        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight vector
+        double yI = -(i - (nY - 1) / 2d) * rY; // the distance from the center to the middle of the pixel in vRight
+                                               // vector
         double xJ = (j - (nX - 1) / 2d) * rX; // the distance from the center to the middle of the pixel in vUp vector
         // Point pIJ = pc.add(vRight.scale(xJ)).add(vUp.scale(yI));
         // pIJ is the center that we need
@@ -287,13 +324,13 @@ public class Camera {
         if (xJ != 0)
             pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0)
-            pIJ = pIJ.add(vUp.scale(yI)); //pIJ is the pixel center
+            pIJ = pIJ.add(vUp.scale(yI)); // pIJ is the pixel center
         // divide the pixel into segments andfind the middle for every segment
-        //ratio segment width and lentgh
-        double sRY = rY/raysNumber;
-        double sRX = rX/raysNumber;
-        //segment[i,j] center
-        double sYI,sXJ;
+        // ratio segment width and lentgh
+        double sRY = rY / raysNumber;
+        double sRX = rX / raysNumber;
+        // segment[i,j] center
+        double sYI, sXJ;
         Point sPIJ;
         for (int si = 0; si < raysNumber; si++) {
             for (int sj = 0; sj < raysNumber; sj++) {
@@ -303,7 +340,7 @@ public class Camera {
                 if (!isZero(sXJ))
                     sPIJ = sPIJ.add(vRight.scale(sXJ));
                 if (!isZero(sYI))
-                    sPIJ = sPIJ.add(vUp.scale(sYI)); //sPIJ is the segment center
+                    sPIJ = sPIJ.add(vUp.scale(sYI)); // sPIJ is the segment center
                 rays.add(new Ray(location, sPIJ.subtract(location)));
             }
         }
@@ -323,8 +360,10 @@ public class Camera {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
         for (int i = 0; i < nX; ++i)
-            for (int j = 0; j < nY; ++j)
+            for (int j = 0; j < nY; ++j) {
+
                 imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
+            }
         return this;
     }
 
@@ -360,7 +399,9 @@ public class Camera {
     }
 
     /**
-     * the fucntion return the color that the ray pointing at
+     * the fucntion return the color that the ray pointing at, using a technique,
+     * depends on the user preference
+     * it use antiAliasing, adaptivesupersampling or traceRay of of the center ray
      * 
      * @param nX number of pixels in axis x
      * @param nY number of pixels in axis y
@@ -369,13 +410,116 @@ public class Camera {
      * @return the color of the pixel
      */
     public Color castRay(int nX, int nY, int j, int i) {
-        //antialasing
-        List<Ray> rays = antiAliasingConstructRay(nX, nY, j, i);
-        Color color = Color.BLACK;
-        for (int k = 0; k < rays.size(); k++)
-            color = color.add(rayTracer.traceRay(rays.get(k)));
-        color = color.reduce(rays.size());
-        return color;
+        if (adaptiveSuperampling) {
+            return adaptiveSuperSamplingHelp(nX, nY, j, i);
+        } else {
+            // antialasing
+            List<Ray> rays = constructRays(nX, nY, j, i);
+            Color color = Color.BLACK;
+            for (int k = 0; k < rays.size(); k++)
+                color = color.add(rayTracer.traceRay(rays.get(k)));
+            color = color.reduce(rays.size());
+            return color;
+        }
     }
 
+    HashMap<Point, Color> colors = new HashMap<Point, Color>();
+
+    /**
+     * the function return the color of the point p on the view plane in the
+     * hashMap, and if it isn't exist, then calculate it
+     * 
+     * @param p the point
+     * @return return the color
+     */
+    private Color getColor(Point p) {
+        if (!colors.containsKey(p))// the color hasn't been calculated before
+        {
+            Color newColor = rayTracer.traceRay(new Ray(location, p.subtract(location)));
+            colors.put(p, newColor);
+            return newColor;
+        } else {
+            return colors.get(p);
+        }
+    }
+
+    /**
+     * wrapper function, that called a function that calculate the color of a
+     * specific pixel
+     * 
+     * @param nX number of pixels in axis x
+     * @param nY number of pixels in axis y
+     * @param j  pixel in column j
+     * @param i  pixel in column i
+     * @return color of the pixel
+     */
+
+    private Color adaptiveSuperSamplingHelp(int nX, int nY, int j, int i) {
+        colors.clear();
+        Point pc = location.add(vTo.scale(distance));
+        double rY = height / nY;
+        double rX = width / nX;
+        double yI = -(i - (nY - 1) / 2d) * rY;
+        double xJ = (j - (nX - 1) / 2d) * rX;
+        Point pIJ = pc;
+        if (xJ != 0)
+            pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0)
+            pIJ = pIJ.add(vUp.scale(yI));
+
+        Point lu = pIJ.add(vRight.scale(-rX / 2)).add(vUp.scale(rY / 2));
+        Point ld = pIJ.add(vRight.scale(-rX / 2)).add(vUp.scale(-rY / 2));
+        Point ru = pIJ.add(vRight.scale(rX / 2)).add(vUp.scale(rY / 2));
+        Point rd = pIJ.add(vRight.scale(rX / 2)).add(vUp.scale(-rY / 2));
+
+        return adaptiveSuperSampling(pIJ, rX, rY, adaptiveSuperSamplingDepth, lu, ld, ru, rd);
+    }
+
+    /**
+     * recursive function to calculate the color of a specific pixel
+     * divided the pixel to four, and called the function again
+     * 
+     * @param pIJ   center of the current square
+     * @param rX    width of the current square
+     * @param rY    height of the current square
+     * @param depth depth of the function
+     * @param lu    left up corner
+     * @param ld    left down corner
+     * @param rd    right down corner
+     * @param ru    right up corner
+     * @return color of the square
+     */
+    private Color adaptiveSuperSampling(Point pIJ, double rX, double rY, int depth, Point lu, Point ld, Point rd,
+            Point ru) {
+
+        if (depth <= 0) {
+            return Color.BLACK.add(getColor(lu), getColor(ld), getColor(rd), getColor(ru)).reduce(4);
+        }
+        Color luColor = getColor(lu);
+        Color ldColor = getColor(ld);
+        Color rdColor = getColor(rd);
+        Color ruColor = getColor(ru);
+
+        // if the corners equals
+        if (luColor.equals(ldColor) && rdColor.equals(ruColor) && luColor.equals(rdColor))
+            return luColor;
+
+        // calculate the point of the four squares
+        Point u = pIJ.add(vUp.scale(rY));
+        Point l = pIJ.add(vRight.scale(-rX));
+        Point d = pIJ.add(vUp.scale(-rY));
+        Point r = pIJ.add(vRight.scale(rX));
+
+        return Color.BLACK.add(
+                adaptiveSuperSampling(pIJ.add(vRight.scale(-rX / 4)).add(vUp.scale(rY / 4)), rX / 2,
+                        rY / 2, depth - 1, lu, l, pIJ, u),
+                adaptiveSuperSampling(pIJ.add(vRight.scale(-rX / 4)).add(vUp.scale(-rY / 4)), rX / 2,
+                        rY / 2, depth - 1, l, ld, d, pIJ),
+                adaptiveSuperSampling(pIJ.add(vRight.scale(rX / 4)).add(vUp.scale(-rY / 4)), rX / 2,
+                        rY / 2, depth - 1, pIJ, d, rd, r),
+                adaptiveSuperSampling(pIJ.add(vRight.scale(rX / 4)).add(vUp.scale(rY / 4)), rX / 2,
+                        rY / 2, depth - 1, u, pIJ, r, ru))
+                .reduce(4);
+
+    }
 }

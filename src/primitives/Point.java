@@ -111,8 +111,9 @@ public class Point {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || !(obj instanceof Point other))
+        if (obj == null || !(obj instanceof Point))
             return false;
+        Point other = (Point)obj;
         return xyz.equals(other.xyz);
     }
 }

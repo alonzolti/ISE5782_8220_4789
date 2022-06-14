@@ -2,6 +2,7 @@ package primitives;
 
 import geometries.Intersectable.GeoPoint;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Ray class represents a ray in the space
@@ -77,7 +78,7 @@ public class Ray {
      */
     public Point findClosestPoint(List<Point> points) {
         return points == null || points.isEmpty() ? null
-                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).collect(Collectors.toList())).point;
     }
 
     /**
@@ -112,8 +113,9 @@ public class Ray {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || !(obj instanceof Ray other))
+        if (obj == null || !(obj instanceof Ray))
             return false;
+        Ray other = (Ray)obj;
         return p0.equals(other.p0) && dir.equals(other.dir);
     }
 

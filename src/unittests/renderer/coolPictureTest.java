@@ -12,7 +12,7 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
-
+//took 1843 seconds with adaptivesupersampling(depth = 2)
 public class coolPictureTest {
     private void addClouds(Scene scene, Point point, double size){
         scene.geometries.add(
@@ -141,7 +141,7 @@ public class coolPictureTest {
         .setVPSize(50d, 50d).setVPDistance(100) //maybe need to be changed
 //        .antiAliasing(5)
             .setImageWriter(new ImageWriter("rocket test", 1000, 1000))
-            .setRayTracer(new RayTracerBasic(scene))
+            .setRayTracer(new RayTracerBasic(scene)).setAdaptiveSupersampling(false).setAdaptiveSuperSamplingDepth(2)
             .antiAliasing(8);
         camera.renderImage().writeToImage();
 
